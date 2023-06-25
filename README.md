@@ -3,14 +3,13 @@ Event-manager
 О проекте
 В данном репозитории содержится (ну если честно, то пока нет!) реализация мнолита для работы нашего приложения.
 Стек проекта:
-
-Java 17
-Maven
-Spring Boot
-Spring Security
-Swagger
-Flyway
-СУБД PostgreSQL(на начальном этапе H2 database)
+ - Java 17
+ - Maven
+ - Spring Boot
+ - Spring Security
+ - Swagger
+ - Flyway
+ - СУБД PostgreSQL(на начальном этапе H2 database)
 
 Git flow
 В проекте используется следующий git flow:

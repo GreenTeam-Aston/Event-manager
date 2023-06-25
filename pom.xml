@@ -33,7 +33,8 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<version>2.1.214</version>
+<!--			<scope>runtime</scope>-->
 		</dependency>
 
 		<dependency>
@@ -53,7 +54,17 @@
 			<scope>test</scope>
 		</dependency>
 
-<!--Пока отключили чтоб не жрало время-->
+
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.5.0</version>
+		</dependency>
+
+
+		<!--Пока отключили чтоб не жрало время-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->

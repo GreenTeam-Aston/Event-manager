@@ -53,7 +53,7 @@
 			<scope>test</scope>
 		</dependency>
 
-
+<!--Пока отключили чтоб не жрало время-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->

@@ -5,16 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "contacts")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
-public class Contact {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "contact_type_id")
-    private ContactType contactType;
+    private String title;
 }

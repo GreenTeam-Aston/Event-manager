@@ -88,7 +88,7 @@ CREATE TABLE product_buckets
 CREATE TABLE user_buckets
 (
     id_user    integer REFERENCES users (id) ON DELETE CASCADE,
-    id_product integer REFERENCES products (id) ON DELETE CASCADE
+    id_bucket integer REFERENCES buckets (id) ON DELETE CASCADE
 );
 
 CREATE TABLE categories_for_events

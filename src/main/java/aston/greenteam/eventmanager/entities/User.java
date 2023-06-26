@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +28,27 @@ public class User {
 
     private String gender;
 
+    @ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns =@JoinColumn(name = "id_role")
+    )
+    private List<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns =@JoinColumn(name = "id_event")
+    )
+    private List<Event> events;
+
+    @ManyToMany
+    @JoinTable(name = "user_buckets",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns =@JoinColumn(name = "id_bucket")
+    )
+    private List<Bucket> bucket;
+
     @OneToOne
     @JoinColumn(name = "contact_id")
     private Contact contact;
@@ -38,4 +60,11 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
+
+    @ManyToMany
+    @JoinTable(name = "user_friends",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns =@JoinColumn(name = "id_friend")
+    )
+    private List<User> friends;
 }

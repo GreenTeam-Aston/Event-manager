@@ -59,7 +59,7 @@ CREATE TABLE products
     id          bigserial PRIMARY KEY,
     title       varchar(30) not null unique,
     description varchar(80),
-    image       varchar(80) not null,
+    image       varchar(150) not null,
     price       integer,
     quantity    varchar(80),
     created_at  timestamp default current_timestamp,

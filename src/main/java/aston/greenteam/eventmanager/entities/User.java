@@ -42,6 +42,9 @@ public class User {
     )
     private List<Event> events;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Event> myEvents;
+
     @ManyToMany
     @JoinTable(name = "user_buckets",
             joinColumns = @JoinColumn(name = "id_user"),

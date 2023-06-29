@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventCategory extends JpaRepository<EventCategory, Long> {
+    //some code
 }

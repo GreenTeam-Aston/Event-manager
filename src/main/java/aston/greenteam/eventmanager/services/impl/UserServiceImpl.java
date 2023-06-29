@@ -1,64 +1,64 @@
 package aston.greenteam.eventmanager.services.impl;
 
-import aston.greenteam.eventmanager.api.JwtRequest;
-import aston.greenteam.eventmanager.api.RegistrationUserDto;
-import aston.greenteam.eventmanager.entities.Role;
+import aston.greenteam.eventmanager.dtos.UserDTORegister;
 import aston.greenteam.eventmanager.entities.User;
+import aston.greenteam.eventmanager.entities.UserRole;
 import aston.greenteam.eventmanager.repositories.UserRepository;
+import aston.greenteam.eventmanager.repositories.UserRoleRepository;
 import aston.greenteam.eventmanager.services.UserService;
-import aston.greenteam.eventmanager.utils.JWTTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.List;
 
+
+@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    private final JWTTokenUtil jwtTokenUtil;
-
+    private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public void auth(JwtRequest jwtRequest) {
-
+    public User saveUser(User user){
+        UserRole userRole = userRoleRepository.findByUserRole("ROLE_USER");
+        user.setUserRole(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
-    public void reg(RegistrationUserDto form) {
-        User user = new User();
-        user.setLogin(form.getLogin());
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.setNickname(form.getNickname());
-        user.setAge(form.getAge());
-        user.setGender(form.getGender());
-        userRepository.save(user);
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    @Override
-    public String getToken(UserDetails userDetails) {
-        return jwtTokenUtil.generateToken(userDetails);
+    public User findByLogin(String login){
+        return userRepository.findByLogin(login).orElseThrow();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+    public UserDTORegister findByUserAndPassword(String login, String password){
+        User userEntity = findByLogin(login);
+
+        if(userEntity != null) {
+            if(passwordEncoder.matches(password, userEntity.getPassword())){
+                return convertToDTO( userEntity);
+            }
+        }
+        return null;
     }
 
-    private Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public boolean existsUserByLogin(String login){
+        return userRepository.existsUserByLogin(login);
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getTitle())).collect(Collectors.toList());
+    public UserDTORegister convertToDTO(User user) {
+        UserDTORegister userDTO = new UserDTORegister();
+        userDTO.setId(user.getId());
+        userDTO.setLogin(user.getLogin());
+        userDTO.setUserRoleString(user.getUserRole().getUserRole());
+        return userDTO;
     }
+
+
 }

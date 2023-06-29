@@ -1,17 +1,18 @@
 package aston.greenteam.eventmanager.services;
 
-import aston.greenteam.eventmanager.api.JwtRequest;
-import aston.greenteam.eventmanager.api.RegistrationUserDto;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
-@Service
-public interface UserService extends UserDetailsService {
+import aston.greenteam.eventmanager.dtos.UserDTORegister;
+import aston.greenteam.eventmanager.entities.User;
 
-    void auth(JwtRequest jwtRequest);
+import java.util.List;
 
-    void reg(RegistrationUserDto form);
+public interface UserService {
 
-    String getToken(UserDetails userDetails);
+    User saveUser(User user);
+    User findByLogin(String login);
+    UserDTORegister findByUserAndPassword(String login, String password);
+    boolean existsUserByLogin(String login);
+    UserDTORegister convertToDTO(User user);
+    List<User> findAll();
+
 }

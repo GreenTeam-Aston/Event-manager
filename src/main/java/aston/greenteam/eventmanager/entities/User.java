@@ -28,6 +28,10 @@ public class User {
 
     private String gender;
 
+    @ManyToOne
+    @JoinColumn(name = "user_role")
+    private UserRole userRole;
+
     @ManyToMany
     @JoinTable(name = "user_events",
             joinColumns = @JoinColumn(name = "id_user"),

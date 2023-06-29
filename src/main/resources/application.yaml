@@ -58,6 +58,3 @@ server:
   port: 8081
   servlet:
     context-path: /app
-jwt:
-  secret: h4f8093h4f983yhrt9834hr0934hf0hf493g493gf438rh438th34g34g
-  lifetime: 36000000

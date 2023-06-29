@@ -1,8 +1,7 @@
 package aston.greenteam.eventmanager.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import aston.greenteam.eventmanager.dtos.UserDTO;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +38,20 @@ public class JWTTokenUtil {
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public UserDTO parseToken (String token) throws ExpiredJwtException {
+        Jws<Claims> claimsJws = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(claimsJws.getBody().get("id",Long.class));
+        userDTO.setLogin(claimsJws.getBody().get("sub",String.class));
+        userDTO.setUserRoleString(claimsJws.getBody().get("role", String.class));
+
+        System.out.println("Роли с parse token =" + userDTO.getUserRoleString());
+        return userDTO;
     }
 
     private Claims getAllClaimsFromToken(String token) {

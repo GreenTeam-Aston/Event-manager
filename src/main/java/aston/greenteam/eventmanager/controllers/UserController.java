@@ -2,7 +2,6 @@ package aston.greenteam.eventmanager.controllers;
 
 import aston.greenteam.eventmanager.api.JwtResponse;
 import aston.greenteam.eventmanager.api.RegistrationUserDto;
-import aston.greenteam.eventmanager.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;

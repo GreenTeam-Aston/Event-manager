@@ -11,6 +11,12 @@ CREATE TABLE contacts
     contact_type_id integer REFERENCES contact_type (id) ON DELETE SET NULL
 );
 
+CREATE TABLE userroles
+(
+    id    bigserial PRIMARY KEY,
+    title varchar(30) not null unique
+);
+
 CREATE TABLE users
 (
     id         bigserial PRIMARY KEY,
@@ -20,6 +26,7 @@ CREATE TABLE users
     age        integer,
     gender     varchar(80),
     contact_id integer REFERENCES contacts (id) ON DELETE SET NULL,
+    userrole_id integer REFERENCES userroles (id) ON DELETE SET NULL,
     created_at timestamp default current_timestamp,
     updated_at timestamp
 );
@@ -35,6 +42,7 @@ CREATE TABLE roles
     id    bigserial PRIMARY KEY,
     title varchar(30) not null unique
 );
+
 
 CREATE TABLE values
 (

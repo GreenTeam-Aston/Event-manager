@@ -22,11 +22,16 @@ public class User {
 
     private String password;
 
-    private String nickname;
+    @Column(name = "nickname")
+    private String username ;
 
     private Integer age;
 
     private String gender;
+
+    @ManyToOne
+    @JoinColumn(name = "userrole_id")
+    private UserRole userRole;
 
     @ManyToMany
     @JoinTable(name = "user_events",

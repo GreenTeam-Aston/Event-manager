@@ -56,7 +56,7 @@ public class Event {
     private Boolean isActive;
 
     @ManyToOne
-    @Column(name = "id_user_created")
+    @JoinColumn(name = "id_user_created")
     private User user;
 
     @Column(name = "tags")

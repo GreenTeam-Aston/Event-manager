@@ -25,13 +25,16 @@ public class Notice {
     @JoinColumn(name = "category_notice_id")
     private NoticeCategory noticeCategory;
 
-    @Column(name = "user_from_id")
+    @ManyToOne
+    @JoinColumn(name = "user_from_id")
     private User userFrom;
 
-    @Column(name = "user_to_id")
+    @ManyToOne
+    @JoinColumn(name = "user_to_id")
     private User userTo;
 
-    @Column(name = "event_id")
+    @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @CreationTimestamp

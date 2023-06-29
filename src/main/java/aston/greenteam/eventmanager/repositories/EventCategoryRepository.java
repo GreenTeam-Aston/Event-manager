@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventCategory extends JpaRepository<EventCategory, Long> {
+public interface EventCategoryRepository extends JpaRepository<EventCategoryRepository, Long> {
     //some code
 }

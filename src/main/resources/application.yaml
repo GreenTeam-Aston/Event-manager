@@ -8,9 +8,9 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=test
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password:
+    password: postgres
   jpa:
     database: POSTGRESQL
     show-sql: true

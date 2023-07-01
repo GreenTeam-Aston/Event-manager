@@ -8,9 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -22,10 +20,6 @@ public class JWTService implements JWTHandler {
     @Override
     public String generateToken(UserDTORegister userDTO) {
 
-        //todo уменьшить после добавления рефреша токена
-        LocalDateTime expiredDate = LocalDateTime.now().plus(15,ChronoUnit.DAYS);
-
-        //todo проверить адекватность работы .setExpiration
         Instant expirationTime = Instant.now().plus(15, ChronoUnit.DAYS);
         Date expirationDate = Date.from(expirationTime);
 
@@ -51,11 +45,7 @@ public class JWTService implements JWTHandler {
         userDTO.setLogin(jwsClaims.getBody().get("login", String.class));
         userDTO.setUserRoleString(jwsClaims.getBody().get("role", String.class));
 
-        System.out.println("UserLogin in token " + userDTO.getLogin() + " role = " + userDTO.getUserRoleString());
-
         return userDTO;
 
     }
-
-
 }

@@ -1,6 +1,5 @@
 package aston.greenteam.eventmanager.filters;
 
-
 import aston.greenteam.eventmanager.dtos.UserDTORegister;
 import aston.greenteam.eventmanager.security.JWTHandler;
 import jakarta.servlet.FilterChain;
@@ -14,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 
 import java.io.IOException;
 import java.util.ArrayList;

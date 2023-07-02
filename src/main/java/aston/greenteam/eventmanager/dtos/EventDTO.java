@@ -24,6 +24,4 @@ public class EventDTO {
     private BigDecimal price;
     private String tags;
     private Long idUserCreated;
-
-
 }

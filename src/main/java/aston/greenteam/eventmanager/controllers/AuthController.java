@@ -56,6 +56,4 @@ public class AuthController {
     public ResponseEntity<?> test (){
         return ResponseEntity.of(Optional.of(String.format("какой то тестовый метод")));
     }
-
-
 }

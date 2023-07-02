@@ -28,11 +28,11 @@ public class EventController {
 
     @GetMapping("/get-by-id/{id}")
     public EventDTO getById(@PathVariable Long id){
-        return eventService.eventToDTO( eventService.findById(id));
+        return eventService.eventToDTO(eventService.findById(id));
     }
 
     @GetMapping("/get-all-events/{id}")
-    public List<EventDTO> getByUserCreatedId(@PathVariable Long id){
+    public List<EventDTO> getByUserCreatedId(@PathVariable Long id) {
         return eventService.findAllByUserCreated(id)
                 .stream()
                 .map(eventService::eventToDTO)
@@ -41,23 +41,28 @@ public class EventController {
 
     //todo добавить обработку различных результатов
     @PostMapping("/create-event")
-    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO){
+    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) {
         eventService.createEvent(eventDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //todo добавить обработку различных результатов
     @DeleteMapping("/remove-event/{id}")
-    public ResponseEntity<?> removeEventById(@PathVariable Long id){
+    public ResponseEntity<?> removeEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
-
-
-
-
-
-
+    @GetMapping("/get-all/{tag}") // TODO Протестить
+    public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
+        return eventService.findAllByTag(tag)
+                .stream()
+                .map(eventService::eventToDTO)
+                .collect(Collectors.toList());
+    }
+    @PutMapping("/update-event")
+    public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) {
+        eventService.updateEvent(eventDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

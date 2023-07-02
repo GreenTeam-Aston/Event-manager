@@ -3,9 +3,7 @@ package aston.greenteam.eventmanager.controllers;
 
 import aston.greenteam.eventmanager.dtos.UserDTO;
 import aston.greenteam.eventmanager.dtos.UserFriendDTO;
-import aston.greenteam.eventmanager.entities.User;
 import aston.greenteam.eventmanager.services.UserService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,28 +46,15 @@ public class UserController {
 
     //todo добавить обработку различных результатов
     @PostMapping("/add-friend")
-    public ResponseEntity<?> addFriend(@RequestParam Long idUser, @RequestParam Long idFriend){
+    public ResponseEntity<?> addFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.addFriends(idUser,idFriend);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //todo добавить обработку различных результатов
     @DeleteMapping("/remove-friend")
-    public ResponseEntity<?> removeFriend(@RequestParam Long idUser, @RequestParam Long idFriend){
+    public ResponseEntity<?> removeFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.deleteFriends(idUser,idFriend);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

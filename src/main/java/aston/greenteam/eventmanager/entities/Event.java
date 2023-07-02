@@ -61,6 +61,7 @@ public class Event {
 
     @Column(name = "tags")
     private String tags; // TODO уточнить что это
+    // теги для быстрого поиска
 
 
 //    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)

@@ -14,9 +14,9 @@ public interface EventService {
     List<Event> findAll();
     List<Event> findAllByUserCreated(Long idUserCreated);
 
-
+    List<Event> findAllByTag(String tag);
 
     public EventDTO eventToDTO(Event event);
 
-
+    void updateEvent(EventDTO eventDTO);
 }

@@ -42,8 +42,6 @@ public class BucketServiceImpl implements BucketService {
         Event event = new Event();
         event.setId(eventId);
 
-        System.out.println("----" + bucketDTO.getPrice());
-
         Bucket bucket = new Bucket();
         bucket.setName(bucketDTO.getName());
         bucket.setPrice(bucketDTO.getPrice());

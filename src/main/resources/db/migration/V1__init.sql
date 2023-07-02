@@ -17,6 +17,8 @@ CREATE TABLE user_roles
     user_role varchar(30) not null unique
 );
 
+INSERT INTO user_roles(user_role) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
+
 CREATE TABLE users
 (
     id         bigserial PRIMARY KEY,
@@ -30,6 +32,10 @@ CREATE TABLE users
     created_at timestamp default current_timestamp,
     updated_at timestamp
 );
+
+INSERT INTO users(login, nickname, password, age, gender, user_role) VALUES
+('user1', 'user1-nickname', '$2a$12$Fz0i8S3MGaywuRiom28aW.D9y0uJSjKkVYnlKvamjp1aPMX0qqp92',20, 'male', 1),
+('user2', 'user2-nickname', '$2a$12$Fz0i8S3MGaywuRiom28aW.D9y0uJSjKkVYnlKvamjp1aPMX0qqp92',22, 'female', 1);
 
 CREATE TABLE user_friends
 (

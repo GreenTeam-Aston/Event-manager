@@ -62,8 +62,9 @@ public class Event {
     @Column(name = "tags")
     private String tags; // TODO уточнить что это
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Notice> notices;
+
+//    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+//    private List<Notice> notices;
 
     @ManyToMany
     @JoinTable(name = "events_categories",

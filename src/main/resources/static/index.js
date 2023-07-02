@@ -4,7 +4,13 @@
         .config(config)
         .run(run);
 
-    function config($routeProvider) {}
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'index.html',
+                controller: 'myCtrl'
+            })
+    }
 
     function run($rootScope, $http, $localStorage) {
 
@@ -49,12 +55,6 @@ angular.module('myApp').controller('myCtrl', function ($scope, $http, $localStor
                 };
             },function errorCallback(response) {
             });
-    };
-
-    $scope.logout = function () {
-        delete $localStorage.webUser;
-        $http.defaults.headers.common['Authorization'] = '';
-        $location.path('/');
     };
 
     $rootScope.isUserLoggedIn = function () {

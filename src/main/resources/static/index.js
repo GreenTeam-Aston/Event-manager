@@ -48,13 +48,21 @@ angular.module('myApp').controller('myCtrl', function ($scope, $http, $localStor
                     $http.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 
                     $localStorage.webUser = {username: $scope.user.username, token: response.data.token};
-                    $scope.user.username = null;
+                    $scope.user.login = null;
                     $scope.user.password = null;
 
+                    //получаем имя каррент юзера
+                    $scope.currentUserNickname = response.data.nickname;
                     $location.path('/');
                 };
             },function errorCallback(response) {
             });
+    };
+
+    $scope.logout = function () {
+        delete $localStorage.webUser;
+        $http.defaults.headers.common['Authorization'] = '';
+        $location.path('/');
     };
 
     $rootScope.isUserLoggedIn = function () {

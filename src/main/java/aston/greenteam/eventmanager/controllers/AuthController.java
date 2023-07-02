@@ -45,11 +45,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody JwtRequestDTO jwtRequestDTO){
-
-
         UserDTORegister userDTO = userService.findByUserAndPassword(jwtRequestDTO.getLogin(), jwtRequestDTO.getPassword());
         String token = jwtHandler.generateToken(userDTO);
-        return ResponseEntity.ok(new JwtResponseDTO(token, userDTO.getNickname(), userDTO.getNickname()));
+        return ResponseEntity.ok(new JwtResponseDTO(token, userDTO.getId(), userDTO.getNickname()));
     }
 
     @GetMapping("/test")

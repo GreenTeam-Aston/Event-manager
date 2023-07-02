@@ -26,22 +26,24 @@
     <div class="container-fluid">
       <a class="navbar-brand">Event Manager</a> <!--#!/ это формат маршрутизатора-->
 
-      <div class="d-flex justify-content-end">
-        <!--<div style="padding-right:10px">
+      <div class="d-flex justify-content-end align-items-center">
+        <div style="padding-right:10px">
           <a href="#!/register" ng-show="!isUserLoggedIn()">Register</a>
-        </div>-->
+        </div>
 
         <form class="d-flex" ng-submit="tryToAuth()" ng-show="!isUserLoggedIn()">
           <input class="form-control me-2" type="text" placeholder="Login" ng-model="user.login">
           <input class="form-control me-2" type="password" placeholder="Password" ng-model="user.password">
           <button class="btn btn-outline-success" type="submit">Login</button>
         </form>
-        <!--<button class="btn btn-outline-success my-2 my-sm-0" ng-click="logout()" ng-show="isUserLoggedIn()">Logout</button>-->
+        <div style="padding-right:10px" ng-show="isUserLoggedIn()">Hello,{{currentUserNickname}}!</div>
+        <button class="btn btn-outline-success my-2 my-sm-0" ng-click="logout()" ng-show="isUserLoggedIn()">Logout</button>
       </div>
     </div>
   </nav>
 
-  <!--<p>{{mydata}}</p>-->
+
+  <h2 ng-show="!isUserLoggedIn()">Event Manager - удобное приложение для планирования бюджета Ваших мероприятий</h2>
   <script src="index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </div>

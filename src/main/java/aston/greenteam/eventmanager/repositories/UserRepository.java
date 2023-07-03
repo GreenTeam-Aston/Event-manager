@@ -19,5 +19,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select u.id ,u.login ,u.nickname ,u.password, u.age ,u.gender ,u.user_role , u.contact_id, u.created_at ,u.updated_at  from user_friends uf join users u on u.id = uf.id_friend \n" +
             "where uf.id_user  = :userId",nativeQuery = true)
     List<User> findAllFriends(Long userId);
-
 }

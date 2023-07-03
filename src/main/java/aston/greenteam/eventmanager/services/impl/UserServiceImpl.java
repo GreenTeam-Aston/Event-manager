@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
     public UserDTORegister convertToDTO(User user) {
         UserDTORegister userDTO = new UserDTORegister();
         userDTO.setId(user.getId());
-        userDTO.setLogin(user.getLogin());
+        userDTO.setNickname(user.getNickname());
         userDTO.setUserRoleString(user.getUserRole().getUserRole());
         return userDTO;
     }

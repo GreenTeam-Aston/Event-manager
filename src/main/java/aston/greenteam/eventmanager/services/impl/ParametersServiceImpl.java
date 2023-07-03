@@ -8,7 +8,7 @@ import aston.greenteam.eventmanager.mappers.ParameterMapper;
 import aston.greenteam.eventmanager.repositories.ParametersRepository;
 import aston.greenteam.eventmanager.repositories.ValuesRepository;
 import aston.greenteam.eventmanager.services.ParametersService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ParametersServiceImpl implements ParametersService {
 
     private final ParametersRepository parametersRepository;

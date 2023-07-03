@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres2:
+    image: postgres:10
+    domainname: eventmanagerpostgres
+    container_name: eventmanagerpostgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1917
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+

@@ -68,7 +68,7 @@ CREATE TABLE products
     description varchar(80),
     image       varchar(80) not null,
     price       integer,
-    quantity    varchar(80),
+    quantity    integer,
     created_at  timestamp default current_timestamp,
     updated_at  timestamp
 );

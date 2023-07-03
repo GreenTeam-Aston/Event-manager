@@ -10,7 +10,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: postgres
+    password: 1917
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -19,7 +19,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

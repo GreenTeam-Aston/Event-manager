@@ -1,9 +1,7 @@
 package aston.greenteam.eventmanager.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,7 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "events")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Event {
 
@@ -61,9 +60,11 @@ public class Event {
 
     @Column(name = "tags")
     private String tags; // TODO уточнить что это
+    // теги для быстрого поиска
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Notice> notices;
+
+//    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+//    private List<Notice> notices;
 
     @ManyToMany
     @JoinTable(name = "events_categories",

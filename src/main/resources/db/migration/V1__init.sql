@@ -8,13 +8,13 @@ CREATE TABLE contacts
 (
     id              bigserial PRIMARY KEY,
     value           varchar(30) not null unique,
-    contact_type_id integer REFERENCES contact_type (id) ON DELETE SET NULL
+    contact_type_id integer     REFERENCES contact_type (id) ON DELETE SET NULL
 );
 
-CREATE TABLE userroles
+CREATE TABLE user_roles
 (
     id    bigserial PRIMARY KEY,
-    title varchar(30) not null unique
+    user_role varchar(30) not null unique
 );
 
 CREATE TABLE users
@@ -25,8 +25,8 @@ CREATE TABLE users
     password   varchar(80) not null,
     age        integer,
     gender     varchar(80),
-    contact_id integer REFERENCES contacts (id) ON DELETE SET NULL,
-    userrole_id integer REFERENCES userroles (id) ON DELETE SET NULL,
+    user_role  integer REFERENCES user_roles (id) ON DELETE SET NULL,
+    contact_id integer     REFERENCES contacts (id) ON DELETE SET NULL,
     created_at timestamp default current_timestamp,
     updated_at timestamp
 );
@@ -42,7 +42,6 @@ CREATE TABLE roles
     id    bigserial PRIMARY KEY,
     title varchar(30) not null unique
 );
-
 
 CREATE TABLE values
 (
@@ -69,7 +68,7 @@ CREATE TABLE products
     description varchar(80),
     image       varchar(80) not null,
     price       integer,
-    quantity    varchar(80),
+    quantity    integer,
     created_at  timestamp default current_timestamp,
     updated_at  timestamp
 );
@@ -95,7 +94,7 @@ CREATE TABLE product_buckets
 
 CREATE TABLE user_buckets
 (
-    id_user    integer REFERENCES users (id) ON DELETE CASCADE,
+    id_user   integer REFERENCES users (id) ON DELETE CASCADE,
     id_bucket integer REFERENCES buckets (id) ON DELETE CASCADE
 );
 

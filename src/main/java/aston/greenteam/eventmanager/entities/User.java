@@ -2,7 +2,9 @@ package aston.greenteam.eventmanager.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
@@ -11,26 +13,27 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String login;
 
     private String password;
 
-    @Column(name = "nickname")
-    private String username ;
+    private String nickname;
 
     private Integer age;
 
     private String gender;
 
     @ManyToOne
-    @JoinColumn(name = "userrole_id")
+    @JoinColumn(name = "user_role")
     private UserRole userRole;
 
     @ManyToMany

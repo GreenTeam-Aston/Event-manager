@@ -1,19 +1,21 @@
 package aston.greenteam.eventmanager.entities;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "userroles")
-@NoArgsConstructor
 @Data
+@Entity
+@Table(name = "user_roles")
+@NoArgsConstructor
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    private String title;
+    @Column(name = "user_role")
+    private String userRole;
+
 }

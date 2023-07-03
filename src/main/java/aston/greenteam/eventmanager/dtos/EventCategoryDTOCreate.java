@@ -1,12 +1,12 @@
-package aston.greenteam.eventmanager.api;
+package aston.greenteam.eventmanager.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class JwtResponse {
-    private String token;
+public class EventCategoryDTOCreate {
+    private String title;
 }

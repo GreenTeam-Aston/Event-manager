@@ -18,7 +18,7 @@ public class EventCategory {
 
     private String title;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "events_categories",
             joinColumns = @JoinColumn(name = "id_category"),
             inverseJoinColumns =@JoinColumn(name = "id_event")

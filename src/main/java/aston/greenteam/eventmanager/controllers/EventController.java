@@ -2,6 +2,7 @@ package aston.greenteam.eventmanager.controllers;
 
 
 import aston.greenteam.eventmanager.dtos.EventDTO;
+import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,25 +18,26 @@ import java.util.stream.Collectors;
 public class EventController {
 
     private final EventService eventService;
+    private final EventMapper eventMapper;
 
     @GetMapping("/get-all")
     public List<EventDTO> getAllEvents(){
         return eventService.findAll()
                 .stream()
-                .map(eventService::eventToDTO)
+                .map(eventMapper::mapEventToDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/get-by-id/{id}")
     public EventDTO getById(@PathVariable Long id){
-        return eventService.eventToDTO(eventService.findById(id));
+        return eventMapper.mapEventToDTO(eventService.findById(id));
     }
 
     @GetMapping("/get-all-events/{id}")
     public List<EventDTO> getByUserCreatedId(@PathVariable Long id) {
         return eventService.findAllByUserCreated(id)
                 .stream()
-                .map(eventService::eventToDTO)
+                .map(eventMapper::mapEventToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +59,7 @@ public class EventController {
     public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
         return eventService.findAllByTag(tag)
                 .stream()
-                .map(eventService::eventToDTO)
+                .map(eventMapper::mapEventToDTO)
                 .collect(Collectors.toList());
     }
     @PutMapping("/update-event")

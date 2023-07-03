@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +25,6 @@ public class EventDTO {
     private BigDecimal price;
     private String tags;
     private Long idUserCreated;
+    private List<Long> idCategories;
+    private List<EventCategorySimpleDTO> eventCategoryDTOS;
 }

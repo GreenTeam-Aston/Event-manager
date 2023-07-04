@@ -14,7 +14,7 @@ public class NoticeCategory {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long noticeCategoryId;
+    private Long id;
 
     private String title;
 

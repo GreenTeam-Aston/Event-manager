@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -28,7 +28,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/get-all")
+    @GetMapping("")
     public List<UserDTO> getAllUsers(){
         return userService.findAll()
                 .stream()
@@ -36,7 +36,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-all-friends/{id}")
+    @GetMapping("/{id}/friends")
     public List<UserFriendDTO> getAllUserFriends(@PathVariable Long id){
         return userService.findFriendsById(id)
                 .stream()
@@ -45,14 +45,14 @@ public class UserController {
     }
 
     //todo добавить обработку различных результатов
-    @PostMapping("/add-friend")
+    @PostMapping("/friends")
     public ResponseEntity<?> addFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.addFriends(idUser,idFriend);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //todo добавить обработку различных результатов
-    @DeleteMapping("/remove-friend")
+    @DeleteMapping("/friends")
     public ResponseEntity<?> removeFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.deleteFriends(idUser,idFriend);
         return ResponseEntity.ok(HttpStatus.OK);

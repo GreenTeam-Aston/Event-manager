@@ -26,7 +26,7 @@ public class AuthController {
     private final JWTHandler jwtHandler;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDTORegister userDTO){
+    public ResponseEntity<?> register( @RequestBody UserDTORegister userDTO){
 
         if(userService.existsUserByLogin(userDTO.getLogin())){
             return ResponseEntity.of(Optional.of(HttpStatus.BAD_REQUEST.value()));

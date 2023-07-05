@@ -21,5 +21,4 @@ public interface UserService {
     List<User> findFriendsById(Long userId);
     void addFriends(Long thisUserId, Long anotherUserId);
     void deleteFriends(Long thisUserId, Long anotherUserId);
-
 }

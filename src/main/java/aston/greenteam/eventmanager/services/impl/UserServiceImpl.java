@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
-
+    @Override
     public User saveUser(User user) {
         UserRole userRole = userRoleRepository.findByUserRole("ROLE_USER");
         user.setUserRole(userRole);
@@ -31,9 +31,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
     public void addFriends(Long thisUserId, Long anotherUserId) {
-        User thisUser = userRepository.findById(thisUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + thisUserId + " не найден."));
-        User anotherUser = userRepository.findById(anotherUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + anotherUserId + " не найден."));
+        User thisUser = userExistValidation(thisUserId);
+        User anotherUser = userExistValidation(anotherUserId);
         addUserFriend(thisUser, anotherUser);
     }
 
@@ -47,14 +48,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(anotherUser);
     }
 
+    @Override
     public void deleteFriends(Long thisUserId, Long anotherUserId) {
-        User thisUser = userRepository.findById(thisUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + thisUserId + " не найден."));
-        User anotherUser = userRepository.findById(anotherUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + anotherUserId + " не найден."));
+        User thisUser = userExistValidation(thisUserId);
+        User anotherUser = userExistValidation(anotherUserId);
         deleteUserFriend(thisUser, anotherUser);
     }
 
     public void deleteUserFriend(User thisUser, User anotherUser) {
-        // Добавил обработку чтобы не было лишнего вызова бд при отсутствии в списке друзей
         if (!(thisUser.getFriends().contains(anotherUser))) {
             thisUser.getFriends().remove(anotherUser);
             anotherUser.getFriends().remove(thisUser);
@@ -63,19 +64,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public List<User> findFriendsById(Long userId) {
         return userRepository.findAllFriends(userId);
     }
-
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Override
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() -> new ObjectNotFoundException("Юзер по логину" + login + " не найден."));
+        return userRepository.findByLogin(login).orElseThrow(() -> new ObjectNotFoundException("User with login: " + login + " not found."));
     }
 
+    @Override
     public UserDTORegister findByUserAndPassword(String login, String password) {
         User userEntity = findByLogin(login);
 
@@ -87,6 +90,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public boolean existsUserByLogin(String login) {
         return userRepository.existsUserByLogin(login);
     }
@@ -115,5 +119,9 @@ public class UserServiceImpl implements UserService {
                 .login(user.getLogin())
                 .nickname(user.getNickname())
                 .build();
+    }
+
+    private User userExistValidation(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User with: " + id + " not found."));
     }
 }

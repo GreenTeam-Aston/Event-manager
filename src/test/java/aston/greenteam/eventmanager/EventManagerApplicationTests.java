@@ -10,4 +10,6 @@ class EventManagerApplicationTests {
 	void contextLoads() {
 	}
 
+	//TODO ЗАКРОЙ КЛАСС
+
 }

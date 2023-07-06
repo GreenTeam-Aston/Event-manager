@@ -35,8 +35,8 @@ public class ProductDTO {
 
     private LocalDateTime updated_at;
 
-    private List<Bucket> buckets;
+    private List<BucketDTO> buckets;
 
-    private Set<Parameter> parameters=new HashSet<>();
+    private Set<ParameterDTO> parameters=new HashSet<>();
 
 }

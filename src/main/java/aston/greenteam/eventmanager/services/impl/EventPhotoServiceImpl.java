@@ -8,7 +8,7 @@ import aston.greenteam.eventmanager.exceptions.PhotoNotFoundException;
 import aston.greenteam.eventmanager.mappers.PhotoMapper;
 import aston.greenteam.eventmanager.repositories.EventPhotoRepository;
 import aston.greenteam.eventmanager.repositories.EventRepository;
-import aston.greenteam.eventmanager.services.EventService;
+import aston.greenteam.eventmanager.services.EventPhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
@@ -19,17 +19,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
-
-// TODO доделать запись фото на диск в getAllEventPhotos, addAllEventPhotos, deletePhoto
 @Service
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService {
+public class EventPhotoServiceImpl implements EventPhotoService {
 
     private final EventPhotoRepository photoRepository;
     private final EventRepository eventRepository;
-    private final String PATH = "src/main/resources/photos/";
+    private final String PATH = "src/main/resources/photos/"; // ДЛЯ ДЕМОНСТРАЦИИ
 
     @Override
     public FileSystemResource getPhoto(long photoId) {
@@ -51,25 +48,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deletePhoto(long photoId) {
         photoRepository.deleteById(photoId);
-    }
-
-    @Override
-    public List<FileSystemResource> getAllEventPhotos(Long eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(EventNotFoundException::new);
-        return photoRepository.findAllByEvent(event)
-                .stream()
-                .map(photo -> new FileSystemResource(photo.getPhotoUri()))
-                .toList();
-    }
-
-    @Override
-    public List<EventPhotoPostDto> addAllEventPhotos(Long eventId, List<MultipartFile> photosFiles) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(EventNotFoundException::new);
-        List<EventPhoto> photoList = PhotoMapper.toEventPhotoList(event, photosFiles);
-        photoList = photoRepository.saveAll(photoList);
-        return PhotoMapper.toEventPhotoPostDto(photoList);
     }
 
     private File writeFile(MultipartFile photoData) {

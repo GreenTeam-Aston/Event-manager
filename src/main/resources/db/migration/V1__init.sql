@@ -131,7 +131,7 @@ CREATE TABLE events_categories
 CREATE TABLE events_photo
 (
     id       bigserial PRIMARY KEY,
-    url      varchar(240),
+    photo_uri      varchar,
     id_event integer REFERENCES events (id) ON DELETE CASCADE
 );
 

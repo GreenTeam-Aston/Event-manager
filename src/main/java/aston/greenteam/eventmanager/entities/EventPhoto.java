@@ -1,18 +1,27 @@
 package aston.greenteam.eventmanager.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "events_photo")
-public class EventPhoto{
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class EventPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String url;
+    @Column(name = "photo_uri")
+    private String photoUri;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "id_event")
     private Event event;
 }

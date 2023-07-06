@@ -20,33 +20,25 @@ public class BucketController {
 
     @GetMapping("")
     public List<BucketDTO> getAllBuckets() {
-        return bucketService.findAll()
-                .stream()
-                .map(bucketService::bucketToDTO)
-                .collect(Collectors.toList());
+        return bucketService.findAll();
     }
 
     @GetMapping("/{id}")
     public BucketDTO getById(@PathVariable Long id) {
-        return bucketService.bucketToDTO(bucketService.findById(id));
+        return bucketService.findById(id);
     }
 
     @GetMapping("/events/{id}")
     public List<BucketDTO> getAllBucketsByEventId(@PathVariable Long id) {
-        return bucketService.findAllByEvent(id)
-                .stream()
-                .map(bucketService::bucketToDTO)
-                .collect(Collectors.toList());
+        return bucketService.findAllByEventId(id);
     }
 
     @GetMapping("/users/{id}")
     public List<BucketDTO> getAllBucketsByUserId(@PathVariable Long id) {
-        return bucketService.findAllByUserCreated(id)
-                .stream()
-                .map(bucketService::bucketToDTO)
-                .collect(Collectors.toList());
+        return bucketService.findAllByUserCreated(id);
     }
 
+    @PostMapping("/create-bucket/{userId}/{eventId}")
     //todo добавить обработку различных результатов
     @PostMapping("/users/{userId}/events/{eventId}")
     public ResponseEntity<?> createBucket(@RequestBody BucketDTO bucketDTO,
@@ -56,6 +48,7 @@ public class BucketController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @DeleteMapping("/remove-bucket/{id}")
     //todo добавить обработку различных результатов
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeBucket(@PathVariable Long id) {

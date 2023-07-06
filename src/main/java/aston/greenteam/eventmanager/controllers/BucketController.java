@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/buckets")
+@RequestMapping("api/v1/buckets")
 @RequiredArgsConstructor
 public class BucketController {
 
     private final BucketService bucketService;
 
-    @GetMapping("/get-all")
+    @GetMapping("")
     public List<BucketDTO> getAllBuckets() {
         return bucketService.findAll()
                 .stream()
@@ -26,12 +26,12 @@ public class BucketController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/{id}")
     public BucketDTO getById(@PathVariable Long id) {
         return bucketService.bucketToDTO(bucketService.findById(id));
     }
 
-    @GetMapping("/get-all-by-event/{id}")
+    @GetMapping("/events/{id}")
     public List<BucketDTO> getAllBucketsByEventId(@PathVariable Long id) {
         return bucketService.findAllByEvent(id)
                 .stream()
@@ -39,7 +39,7 @@ public class BucketController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-all-by-user/{id}")
+    @GetMapping("/users/{id}")
     public List<BucketDTO> getAllBucketsByUserId(@PathVariable Long id) {
         return bucketService.findAllByUserCreated(id)
                 .stream()
@@ -48,7 +48,7 @@ public class BucketController {
     }
 
     //todo добавить обработку различных результатов
-    @PostMapping("/create-bucket/{userId}/{eventId}")
+    @PostMapping("/users/{userId}/events/{eventId}")
     public ResponseEntity<?> createBucket(@RequestBody BucketDTO bucketDTO,
                                          @PathVariable Long userId,
                                          @PathVariable Long eventId) {
@@ -57,7 +57,7 @@ public class BucketController {
     }
 
     //todo добавить обработку различных результатов
-    @DeleteMapping("/remove-bucket/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> removeBucket(@PathVariable Long id) {
         bucketService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);

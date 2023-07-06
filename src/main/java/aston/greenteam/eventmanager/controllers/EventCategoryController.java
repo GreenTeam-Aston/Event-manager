@@ -10,27 +10,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/events-category")
+@RequestMapping("api/v1/events-category")
 @RequiredArgsConstructor
 public class EventCategoryController {
     private final EventCategoryService eventCategoryService;
-    @GetMapping("/get-all")
+    @GetMapping("")
     public List<EventCategoryDTO> getAllCategories() {
         return eventCategoryService.findAll();
     }
 
-    @GetMapping("/get-by-id/{eventCategoryId}")
+    @GetMapping("/{eventCategoryId}")
     public EventCategoryDTO getCategory(@PathVariable Long eventCategoryId) {
         return eventCategoryService.findById(eventCategoryId);
     }
 
-    @PostMapping("/create-events-category")
+    @PostMapping("")
     public ResponseEntity<?> createEventCategory(@RequestBody EventCategoryDTOCreate eventCategoryDTOCreate) {
         eventCategoryService.addNewCategory(eventCategoryDTOCreate);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete-events-category/{eventCategoryId}")
+    @DeleteMapping("/{eventCategoryId}")
     public ResponseEntity<?> deleteEventCategory(@PathVariable Long eventCategoryId) {
         eventCategoryService.deleteCategory(eventCategoryId);
         return ResponseEntity.ok(HttpStatus.OK);

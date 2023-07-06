@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("api/v1/events")
 @RequiredArgsConstructor
 public class EventController {
 
     private final EventService eventService;
     private final EventMapper eventMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("")
     public List<EventDTO> getAllEvents(){
         return eventService.findAll()
                 .stream()
@@ -28,12 +28,12 @@ public class EventController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/{id}")
     public EventDTO getById(@PathVariable Long id){
         return eventMapper.mapEventToDTO(eventService.findById(id));
     }
 
-    @GetMapping("/get-all-events/{id}")
+    @GetMapping("/user-created/{id}")
     public List<EventDTO> getByUserCreatedId(@PathVariable Long id) {
         return eventService.findAllByUserCreated(id)
                 .stream()
@@ -42,27 +42,27 @@ public class EventController {
     }
 
     //todo добавить обработку различных результатов
-    @PostMapping("/create-event")
+    @PostMapping("")
     public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) {
         eventService.createEvent(eventDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //todo добавить обработку различных результатов
-    @DeleteMapping("/remove-event/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> removeEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/get-all/{tag}") // TODO Протестить
+    @GetMapping("/tag/{tag}") // TODO Протестить
     public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
         return eventService.findAllByTag(tag)
                 .stream()
                 .map(eventMapper::mapEventToDTO)
                 .collect(Collectors.toList());
     }
-    @PutMapping("/update-event")
+    @PutMapping("")
     public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) {
         eventService.updateEvent(eventDTO);
         return ResponseEntity.ok(HttpStatus.OK);

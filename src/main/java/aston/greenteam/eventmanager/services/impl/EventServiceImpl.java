@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,15 +46,18 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     public void createEvent(EventDTO eventDTO) {
-        User user = new User();
-        user.setId(eventDTO.getIdUserCreated());
-        Event event = new Event();
         if (eventDTO.getTitle().isBlank() || eventDTO.getTitle().isEmpty()) {
             throw new ValidationException("Поле названия не может быть пустым.");
         }
         if (eventDTO.getIdCategories().isEmpty()) {
             throw new ValidationException("Поле категорий ивента не может быть пустым.");
         }
+        if (eventDTO.getTags().isBlank() || eventDTO.getTags().isEmpty()) {
+            throw new ValidationException("Поле тега не может быть пустым.");
+        }
+        User user = new User();
+        user.setId(eventDTO.getIdUserCreated());
+        Event event = new Event();
         List<EventCategory> list = eventDTO.getIdCategories().stream()
                 .map((id) -> eventCategoryRepository.findById(id)
                         .orElseThrow(() -> new ObjectNotFoundException("Категории с id: " + id + " не существует.")))
@@ -65,9 +67,7 @@ public class EventServiceImpl implements EventService {
         event.setDescription(eventDTO.getDescription());
         event.setLinkImage(eventDTO.getLinkImage());
         event.setPrice(eventDTO.getPrice());
-        if (eventDTO.getTags().isBlank() || eventDTO.getTags().isEmpty()) {
-            throw new ValidationException("Поле тега не может быть пустым.");
-        }
+
         event.setTags(eventDTO.getTags());
         event.setUser(user);
         eventRepository.save(event);

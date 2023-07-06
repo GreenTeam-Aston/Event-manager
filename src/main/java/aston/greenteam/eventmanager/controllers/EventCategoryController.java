@@ -13,8 +13,9 @@ import java.util.List;
 @RequestMapping("api/v1/events-category")
 @RequiredArgsConstructor
 public class EventCategoryController {
+
     private final EventCategoryService eventCategoryService;
-    @GetMapping("")
+    @GetMapping
     public List<EventCategoryDTO> getAllCategories() {
         return eventCategoryService.findAll();
     }
@@ -24,7 +25,7 @@ public class EventCategoryController {
         return eventCategoryService.findById(eventCategoryId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> createEventCategory(@RequestBody EventCategoryDTOCreate eventCategoryDTOCreate) {
         eventCategoryService.addNewCategory(eventCategoryDTOCreate);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -35,5 +36,4 @@ public class EventCategoryController {
         eventCategoryService.deleteCategory(eventCategoryId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
 }

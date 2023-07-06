@@ -44,14 +44,12 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    //todo добавить обработку различных результатов
     @PostMapping("/friends")
     public ResponseEntity<?> addFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.addFriends(idUser,idFriend);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    //todo добавить обработку различных результатов
     @DeleteMapping("/friends")
     public ResponseEntity<?> removeFriend(@RequestParam Long idUser, @RequestParam Long idFriend) {
         userService.deleteFriends(idUser,idFriend);

@@ -12,7 +12,7 @@ public interface UserService {
 
     User findById(Long userId);
 
-    User saveUser(User user);
+    User saveUser(UserDTORegister userDTORegister);
     User findByLogin(String login);
     UserDTORegister findByUserAndPassword(String login, String password);
     boolean existsUserByLogin(String login);

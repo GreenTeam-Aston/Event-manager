@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/api/v1/product")
 @AllArgsConstructor
 public class ProductController {
 
     private final ProductsServiceImpl productsServiceImpl;
 
+    //TODO
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findByValueId(@PathVariable Long id) {
         return new ResponseEntity<>(productsServiceImpl.findById(id), HttpStatus.OK);
@@ -29,15 +30,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
-        return new ResponseEntity<>(productsServiceImpl.createProduct(productDTO), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDTO create(@RequestBody ProductDTO productDTO) {
+        return productsServiceImpl.createProduct(productDTO);
     }
 
     @PutMapping
-    public ResponseEntity<ProductDTO> update(@RequestBody Product product) {
-        return new ResponseEntity<>(productsServiceImpl.updateProduct(product), HttpStatus.OK);
+    public ProductDTO update(@RequestBody Product product) {
+        return productsServiceImpl.updateProduct(product);
     }
 
+    //TODO refactor
     @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable Long id) {
         productsServiceImpl.deleteProduct(id);
@@ -45,10 +48,8 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}/parameter/{parameterId}")
-    public ProductDTO assignProjectToEmployee(
-            @PathVariable Long productId,
-            @PathVariable Long parameterId
-    ){
+    public ProductDTO assignProjectToEmployee(@PathVariable Long productId,
+                                              @PathVariable Long parameterId) {
         return productsServiceImpl.assignParameterToProduct(productId, parameterId);
     }
 

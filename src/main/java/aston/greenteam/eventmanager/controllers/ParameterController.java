@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1parameters")
+@RequestMapping("api/v1/parameters")
 @AllArgsConstructor
 public class ParameterController {
 
@@ -29,7 +29,7 @@ public class ParameterController {
 
     @PostMapping
     public ResponseEntity<ParameterDTO> create(@RequestBody ParameterDTO parameterDTO) {
-        return new ResponseEntity<>(parametersServiceImpl.createParameter(parameterDTO), HttpStatus.OK);
+        return new ResponseEntity<>(parametersServiceImpl.createParameter(parameterDTO), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -44,12 +44,8 @@ public class ParameterController {
     }
 
     @PutMapping("/{parameterId}/value/{valueId}")
-    public ParameterDTO assignProjectToEmployee(
-            @PathVariable Long parameterId,
-            @PathVariable Long valueId
-    ){
+    public ParameterDTO assignProjectToEmployee(@PathVariable Long parameterId,
+                                                @PathVariable Long valueId) {
         return parametersServiceImpl.assignValueToParameter(parameterId, valueId);
     }
-
-
 }

@@ -18,7 +18,7 @@ public class BucketController {
 
     private final BucketService bucketService;
 
-    @GetMapping("")
+    @GetMapping
     public List<BucketDTO> getAllBuckets() {
         return bucketService.findAll();
     }
@@ -38,8 +38,6 @@ public class BucketController {
         return bucketService.findAllByUserCreated(id);
     }
 
-    @PostMapping("/create-bucket/{userId}/{eventId}")
-    //todo добавить обработку различных результатов
     @PostMapping("/users/{userId}/events/{eventId}")
     public ResponseEntity<?> createBucket(@RequestBody BucketDTO bucketDTO,
                                          @PathVariable Long userId,
@@ -48,14 +46,9 @@ public class BucketController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/remove-bucket/{id}")
-    //todo добавить обработку различных результатов
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeBucket(@PathVariable Long id) {
         bucketService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
-
-
 }

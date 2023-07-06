@@ -25,7 +25,11 @@ public class UserServiceImpl implements UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User saveUser(User user) {
+    public User saveUser(UserDTORegister userDTORegister) {
+        User user = new User();
+        user.setLogin(userDTORegister.getLogin());
+        user.setNickname(userDTORegister.getNickname());
+        user.setPassword(userDTORegister.getPassword());
         UserRole userRole = userRoleRepository.findByUserRole("ROLE_USER");
         user.setUserRole(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

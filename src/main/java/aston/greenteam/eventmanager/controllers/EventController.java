@@ -20,7 +20,7 @@ public class EventController {
     private final EventService eventService;
     private final EventMapper eventMapper;
 
-    @GetMapping("")
+    @GetMapping
     public List<EventDTO> getAllEvents(){
         return eventService.findAll()
                 .stream()
@@ -41,28 +41,26 @@ public class EventController {
                 .collect(Collectors.toList());
     }
 
-    //todo добавить обработку различных результатов
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) {
         eventService.createEvent(eventDTO);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    //todo добавить обработку различных результатов
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/tag/{tag}") // TODO Протестить
-    public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
+    @GetMapping("/tag/{tag}")
+    public List<EventDTO> findAllEventsByTags(@PathVariable String tag) {
         return eventService.findAllByTag(tag)
                 .stream()
                 .map(eventMapper::mapEventToDTO)
                 .collect(Collectors.toList());
     }
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) {
         eventService.updateEvent(eventDTO);
         return ResponseEntity.ok(HttpStatus.OK);

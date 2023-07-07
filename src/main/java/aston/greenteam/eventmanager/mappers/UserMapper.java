@@ -2,6 +2,7 @@ package aston.greenteam.eventmanager.mappers;
 
 import aston.greenteam.eventmanager.dtos.UserDTO;
 import aston.greenteam.eventmanager.dtos.UserFriendDTO;
+import aston.greenteam.eventmanager.dtos.UserSimpleDTO;
 import aston.greenteam.eventmanager.entities.User;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,13 @@ public class UserMapper {
                 .nickname(user.getNickname())
                 .age(user.getAge())
                 .gender(user.getGender())
+                .build();
+    }
+
+    public UserSimpleDTO mapUserToSimpleDTO(User user) {
+        return UserSimpleDTO.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
                 .build();
     }
 

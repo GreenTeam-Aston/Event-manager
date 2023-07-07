@@ -4,7 +4,6 @@ package aston.greenteam.eventmanager.controllers;
 import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
 import aston.greenteam.eventmanager.dtos.EventUpdateDTO;
-import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import java.util.List;;
 public class EventController {
 
     private final EventService eventService;
-    private final EventMapper eventMapper;
 
     @GetMapping("/get-all")
     public List<EventDTO> getAllEvents() {
@@ -36,8 +34,9 @@ public class EventController {
     }
 
     @PostMapping("/create-event")
-    public void createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
+    public ResponseEntity<?> createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
         eventService.createEvent(eventCreateDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/remove-event/{id}")
@@ -51,9 +50,9 @@ public class EventController {
         return eventService.findAllByTag(tag);
     }
 
-    @PutMapping("/update-event")
-    public ResponseEntity<?> updateEvent(@RequestBody EventUpdateDTO eventUpdateDTO) {
-        eventService.updateEvent(eventUpdateDTO);
+    @PutMapping("/update-event/{id}")
+    public ResponseEntity<?> updateEvent( @PathVariable Long id, @RequestBody EventUpdateDTO eventUpdateDTO) {
+        eventService.updateEvent(eventUpdateDTO, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

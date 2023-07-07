@@ -22,12 +22,12 @@ public class EventDTO {
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
     private Boolean isActive;
-    private UserDTO userCreated;
+    private UserSimpleDTO userCreated;
     private String tags;
     private String linkEventSite;
     private String linkImage;
     private BigDecimal price;
     private List<EventCategorySimpleDTO> eventCategories;
     private List<EventPhotoDTO> eventPhotos;
-    private List<UserDTO> users;
+    private List<UserSimpleDTO> users;
 }

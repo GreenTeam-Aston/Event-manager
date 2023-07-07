@@ -4,12 +4,12 @@ package aston.greenteam.eventmanager.controllers;
 import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
 import aston.greenteam.eventmanager.dtos.EventUpdateDTO;
-import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;;
 
 @RestController
@@ -18,7 +18,6 @@ import java.util.List;;
 public class EventController {
 
     private final EventService eventService;
-    private final EventMapper eventMapper;
 
     @GetMapping
     public List<EventDTO> getAllEvents() {
@@ -35,9 +34,10 @@ public class EventController {
         return eventService.findAllByUserCreated(id);
     }
 
-    @PostMapping
-    public void createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
+    @PostMapping()
+    public ResponseEntity<?> createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
         eventService.createEvent(eventCreateDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -51,9 +51,9 @@ public class EventController {
         return eventService.findAllByTag(tag);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateEvent(@RequestBody EventUpdateDTO eventUpdateDTO) {
-        eventService.updateEvent(eventUpdateDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDTO eventUpdateDTO) {
+        eventService.updateEvent(eventUpdateDTO, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

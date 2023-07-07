@@ -10,8 +10,8 @@ import java.util.List;
 @Component
 public class EventMapper {
     private final EventCategoryMapper eventCategoryMapper;
-    public EventDTO mapEventToDTO(Event event, UserDTO userDTO, List<EventCategorySimpleDTO> eventCategoryDTOList,
-                                  List<EventPhotoDTO> eventPhotoDTOList, List<UserDTO> userDTOList) {
+    public EventDTO mapEventToDTO(Event event, UserSimpleDTO userSimpleDTO, List<EventCategorySimpleDTO> eventCategoryDTOList,
+                                  List<EventPhotoDTO> eventPhotoDTOList, List<UserSimpleDTO> userSimpleDTOList) {
         List<EventCategorySimpleDTO> eventCategorySimpleDTOS = event.getEventCategories().stream()
                 .map(eventCategoryMapper::mapCategoryEventToSimpleDTO).toList();
         return EventDTO.builder()
@@ -21,14 +21,14 @@ public class EventMapper {
                 .startDatetime(event.getStartDatetime())
                 .endDatetime(event.getEndDatetime())
                 .isActive(event.getIsActive())
-                .userCreated(userDTO)
+                .userCreated(userSimpleDTO)
                 .tags(event.getTags())
                 .linkEventSite(event.getLinkEventSite())
                 .linkImage(event.getLinkImage())
                 .price(event.getPrice())
                 .eventCategories(eventCategoryDTOList)
                 .eventPhotos(eventPhotoDTOList)
-                .users(userDTOList)
+                .users(userSimpleDTOList)
                 .build();
     }
 }

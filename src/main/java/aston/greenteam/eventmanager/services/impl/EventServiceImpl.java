@@ -38,26 +38,26 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Event with id:" + id + " not exist.")
         );
-        return map(event);
+        return toDTO(event);
     }
 
     public List<EventDTO> findAll() {
         List<Event> eventRepositoryAll = eventRepository.findAll();
-        return mapList(eventRepositoryAll);
+        return toListDTO(eventRepositoryAll);
     }
 
     public List<EventDTO> findAllByUserCreated(Long idUserCreated) {
         User user = userRepository.findById(idUserCreated).orElseThrow(() -> new ObjectNotFoundException("User with id:"
                 + idUserCreated + " not exist."));
         List<Event> allByUser = eventRepository.findAllByUser(user);
-        return mapList(allByUser);
+        return toListDTO(allByUser);
     }
 
     @Override
     public List<EventDTO> findAllByTag(String tag) {
         if (tag.isBlank()) throw new ValidationException("The tage field cannot be empty.");
         List<Event> allByTagsIgnoreCase = eventRepository.findAllByTagsIgnoreCase(tag);
-        return mapList(allByTagsIgnoreCase);
+        return toListDTO(allByTagsIgnoreCase);
     }
 
     @Transactional
@@ -75,12 +75,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(EventUpdateDTO eventUpdateDTO) {
-        if (eventUpdateDTO.getId() == null) throw new ValidationException("The id field cannot be null.");
-        Event event = eventRepository.findById(eventUpdateDTO.getId()).orElseThrow(
-                () -> new ObjectNotFoundException("Event with id:" + eventUpdateDTO.getId() + " not found.")
+    public void updateEvent(EventUpdateDTO eventUpdateDTO, Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(
+                () -> new ObjectNotFoundException("Event with id:" + id + " not found.")
         );
-        Optional.ofNullable(event.getTitle()).ifPresent(event::setTitle);
+        Optional.ofNullable(eventUpdateDTO.getTitle()).ifPresent(event::setTitle);
         Optional.ofNullable(eventUpdateDTO.getDescription()).ifPresent(event::setDescription);
         Optional.ofNullable(eventUpdateDTO.getStartDatetime()).ifPresent(event::setStartDatetime);
         Optional.ofNullable(eventUpdateDTO.getEndDatetime()).ifPresent(event::setEndDatetime);
@@ -89,26 +88,29 @@ public class EventServiceImpl implements EventService {
         Optional.ofNullable(eventUpdateDTO.getLinkEventSite()).ifPresent(event::setLinkEventSite);
         Optional.ofNullable(eventUpdateDTO.getLinkImage()).ifPresent(event::setLinkImage);
         Optional.ofNullable(eventUpdateDTO.getLinkImage()).ifPresent(event::setLinkImage);
-        if (!eventUpdateDTO.getIdEventCategories().isEmpty()) {
+        if (eventUpdateDTO.getIdEventCategories() != null) {
             List<EventCategory> eventCategories = eventUpdateDTO.getIdEventCategories().stream()
-                    .map(id -> eventCategoryRepository.findById(id).orElseThrow(
-                            () -> new ObjectNotFoundException("Category with id:" + id + " not exist.")
+                    .map(idEvent -> eventCategoryRepository.findById(idEvent).orElseThrow(
+                            () -> new ObjectNotFoundException("Category with id:" + idEvent + " not exist.")
                     )).toList();
-            event.setEventCategories(eventCategories);
+            event.getEventCategories().clear();
+            event.getEventCategories().addAll(eventCategories);
         }
-        if (!eventUpdateDTO.getIdEventPhotos().isEmpty()) {
+        if (eventUpdateDTO.getIdEventPhotos() != null) {
             List<EventPhoto> eventPhotos = eventUpdateDTO.getIdEventCategories().stream()
-                    .map(id -> eventPhotoRepository.findById(id).orElseThrow(
-                            () -> new ObjectNotFoundException("Photo with id:" + id + " not exist.")
+                    .map(idPhoto -> eventPhotoRepository.findById(idPhoto).orElseThrow(
+                            () -> new ObjectNotFoundException("Photo with id:" + idPhoto + " not exist.")
                     )).toList();
-            event.setEventPhotos(eventPhotos);
+            event.getEventPhotos().clear();
+            event.getEventPhotos().addAll(eventPhotos);
         }
-        if (!eventUpdateDTO.getIdUsers().isEmpty()) {
+        if (eventUpdateDTO.getIdUsers() != null) {
             List<User> userList = eventUpdateDTO.getIdUsers().stream()
-                    .map(id -> userRepository.findById(id).orElseThrow(
-                            () -> new ObjectNotFoundException("User with id:" + id + " not exist.")
+                    .map(idUser -> userRepository.findById(idUser).orElseThrow(
+                            () -> new ObjectNotFoundException("User with id:" + idUser + " not exist.")
                     )).toList();
-            event.setUsers(userList);
+            event.getUsers().clear();
+            event.getUsers().addAll(userList);
         }
         eventRepository.save(event);
     }
@@ -116,39 +118,36 @@ public class EventServiceImpl implements EventService {
     private void validate(EventCreateDTO eventCreateDTO) {
         if (eventCreateDTO.getTitle().isBlank()) throw new ValidationException("The title field cannot be empty.");
         if (eventCreateDTO.getTags().isBlank()) throw new ValidationException("The tage field cannot be empty.");
-        if (eventCreateDTO.getIdEventCategories().isEmpty())
-            throw new ValidationException("Categories must be specified.");
-        if (eventCreateDTO.getIsActive() == null) throw new ValidationException("The active field cannot be empty.");
         if (eventCreateDTO.getIdUserCreated() == null) throw new ValidationException("The id creator cannot be empty");
     }
 
-    public List<EventDTO> mapList(List<Event> eventList) {
+    public List<EventDTO> toListDTO(List<Event> eventList) {
         List<EventDTO> eventDTOList = new ArrayList<>();
         for (Event event : eventList) {
-            EventDTO eventDTO = map(event);
+            EventDTO eventDTO = toDTO(event);
             eventDTOList.add(eventDTO);
         }
         return eventDTOList;
     }
 
-    private EventDTO map(Event event) {
+    public EventDTO toDTO(Event event) {
         List<EventCategorySimpleDTO> eventCategorySimpleDTOList = event.getEventCategories().stream()
                 .map(eventCategoryMapper::mapCategoryEventToSimpleDTO)
                 .toList();
         List<EventPhotoDTO> eventPhotoDTOList = event.getEventPhotos().stream()
                 .map(eventPhotoMapper::mapEventPhotoToDTO)
                 .toList();
-        List<UserDTO> userDTOList = event.getUsers().stream()
-                .map(userMapper::mapUserToDTO)
+        List<UserSimpleDTO> userSimpleDTOList = event.getUsers().stream()
+                .map(userMapper::mapUserToSimpleDTO)
                 .toList();
-        UserDTO userDTO = userMapper.mapUserToDTO(event.getUser());
-        return eventMapper.mapEventToDTO(event, userDTO, eventCategorySimpleDTOList,
-                eventPhotoDTOList, userDTOList);
+        UserSimpleDTO userSimpleDTO = userMapper.mapUserToSimpleDTO(event.getUser());
+        return eventMapper.mapEventToDTO(event, userSimpleDTO, eventCategorySimpleDTOList,
+                eventPhotoDTOList, userSimpleDTOList);
     }
 
     private Event fieldsEvent(EventCreateDTO eventCreateDTO) {
         Event event = new Event();
-        event.setTitle(event.getTitle());
+        event.setTitle(eventCreateDTO.getTitle());
         Optional.ofNullable(eventCreateDTO.getDescription()).ifPresent(event::setDescription);
         Optional.ofNullable(eventCreateDTO.getStartDatetime()).ifPresent(event::setStartDatetime);
         Optional.ofNullable(eventCreateDTO.getEndDatetime()).ifPresent(event::setEndDatetime);
@@ -163,6 +162,7 @@ public class EventServiceImpl implements EventService {
                         () -> new ObjectNotFoundException("Category with id:" + id + " not exist.")
                 )).toList();
         event.setEventCategories(list);
+        System.out.println(event);
         return event;
     }
 }

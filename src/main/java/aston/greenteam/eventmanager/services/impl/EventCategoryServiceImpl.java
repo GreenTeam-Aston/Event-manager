@@ -30,7 +30,7 @@ public class EventCategoryServiceImpl implements EventCategoryService {
         System.out.println(all);
         List<EventCategoryDTO> eventCategoryDTOS = new ArrayList<>();
         for (EventCategory eventCategory : all) {
-            List<EventDTO> collect = eventService.mapList(eventCategory.getEvents());
+            List<EventDTO> collect = eventService.toListDTO(eventCategory.getEvents());
             EventCategoryDTO eventCategoryDTO = eventCategoryMapper.mapCategoryEventToDTO(eventCategory, collect);
             eventCategoryDTOS.add(eventCategoryDTO);
         }
@@ -42,7 +42,7 @@ public class EventCategoryServiceImpl implements EventCategoryService {
         EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Category event with id:" + id + " not found.")
         );
-        List<EventDTO> list = eventService.mapList(eventCategory.getEvents());
+        List<EventDTO> list = eventService.toListDTO(eventCategory.getEvents());
         return new EventCategoryDTO(eventCategory.getId(), eventCategory.getTitle(), list);
     }
 

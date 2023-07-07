@@ -23,6 +23,20 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: marketscrum@gmail.com
+    password: "bptylqrnsqyyjonp"
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    sender:
+      email: no-reply@gmail.com
 server:
   port: 8081
   servlet:
@@ -54,6 +68,20 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: marketscrum@gmail.com
+    password: "bptylqrnsqyyjonp"
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    sender:
+      email: no-reply@gmail.com
 server:
   port: 8081
   servlet:

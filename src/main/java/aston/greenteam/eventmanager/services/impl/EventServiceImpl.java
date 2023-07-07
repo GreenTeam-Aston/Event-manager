@@ -1,116 +1,168 @@
 package aston.greenteam.eventmanager.services.impl;
 
-import aston.greenteam.eventmanager.dtos.EventDTO;
+import aston.greenteam.eventmanager.dtos.*;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.EventCategory;
+import aston.greenteam.eventmanager.entities.EventPhoto;
 import aston.greenteam.eventmanager.entities.User;
 import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
 import aston.greenteam.eventmanager.exceptions.ValidationException;
-import aston.greenteam.eventmanager.repositories.EventCategoryRepository;
-import aston.greenteam.eventmanager.repositories.EventRepository;
+import aston.greenteam.eventmanager.mappers.EventCategoryMapper;
+import aston.greenteam.eventmanager.mappers.EventMapper;
+import aston.greenteam.eventmanager.mappers.EventPhotoMapper;
+import aston.greenteam.eventmanager.mappers.UserMapper;
+import aston.greenteam.eventmanager.repositories.*;
 import aston.greenteam.eventmanager.services.EventService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
+    private final EventPhotoRepository eventPhotoRepository;
     private final EventCategoryRepository eventCategoryRepository;
+    private final EventMapper eventMapper;
+    private final EventCategoryMapper eventCategoryMapper;
+    private final EventPhotoMapper eventPhotoMapper;
+    private final UserMapper userMapper;
 
-    public Event findById(Long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Ивент с ид:" + id + " не найден"));
+    public EventDTO findById(Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(
+                () -> new ObjectNotFoundException("Event with id:" + id + " not exist.")
+        );
+        return map(event);
     }
 
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public List<EventDTO> findAll() {
+        List<Event> eventRepositoryAll = eventRepository.findAll();
+        return mapList(eventRepositoryAll);
     }
 
-    public List<Event> findAllByUserCreated(Long idUserCreated) {
-        User user = new User();
-        user.setId(idUserCreated);
-        return eventRepository.findAllByUser(user);
+    public List<EventDTO> findAllByUserCreated(Long idUserCreated) {
+        User user = userRepository.findById(idUserCreated).orElseThrow(() -> new ObjectNotFoundException("User with id:"
+                + idUserCreated + " not exist."));
+        List<Event> allByUser = eventRepository.findAllByUser(user);
+        return mapList(allByUser);
     }
 
     @Override
-    public List<Event> findAllByTag(String tag) {
-        if (tag.isBlank()) {
-            throw new ValidationException("Поле тега не может быть пустым");
-        }
-        return eventRepository.findAllByTagsIgnoreCase(tag);
+    public List<EventDTO> findAllByTag(String tag) {
+        if (tag.isBlank()) throw new ValidationException("The tage field cannot be empty.");
+        List<Event> allByTagsIgnoreCase = eventRepository.findAllByTagsIgnoreCase(tag);
+        return mapList(allByTagsIgnoreCase);
     }
 
     @Transactional
-    public void createEvent(EventDTO eventDTO) {
-        if (eventDTO.getTitle().isBlank() || eventDTO.getTitle().isEmpty()) {
-            throw new ValidationException("Поле названия не может быть пустым.");
-        }
-        if (eventDTO.getIdCategories().isEmpty()) {
-            throw new ValidationException("Поле категорий ивента не может быть пустым.");
-        }
-        if (eventDTO.getTags().isBlank() || eventDTO.getTags().isEmpty()) {
-            throw new ValidationException("Поле тега не может быть пустым.");
-        }
-        User user = new User();
-        user.setId(eventDTO.getIdUserCreated());
-        Event event = new Event();
-        List<EventCategory> list = eventDTO.getIdCategories().stream()
-                .map((id) -> eventCategoryRepository.findById(id)
-                        .orElseThrow(() -> new ObjectNotFoundException("Категории с id: " + id + " не существует.")))
-                .toList();
-        event.setEventCategories(list);
-        event.setTitle(eventDTO.getTitle());
-        event.setDescription(eventDTO.getDescription());
-        event.setLinkImage(eventDTO.getLinkImage());
-        event.setPrice(eventDTO.getPrice());
-
-        event.setTags(eventDTO.getTags());
-        event.setUser(user);
+    public void createEvent(EventCreateDTO eventCreateDTO) {
+        validate(eventCreateDTO);
+        Event event = fieldsEvent(eventCreateDTO);
         eventRepository.save(event);
     }
 
     public void deleteEventById(Long id) {
         if (!(eventRepository.existsById(id))) {
-            throw new ObjectNotFoundException("Событие по ид: " + id + " не найдено.");
+            throw new ObjectNotFoundException("Event with id:" + id + " not exist.");
         }
         eventRepository.deleteById(id);
     }
 
-    public EventDTO mapEventToDTO(Event event) {
-        return EventDTO.builder()
-                .id(event.getId())
-                .description(event.getDescription())
-                .startDatetime(event.getStartDatetime())
-                .endDatetime(event.getEndDatetime())
-                .linkImage(event.getLinkImage())
-                .price(event.getPrice())
-                .tags(event.getTags())
-                .idUserCreated(event.getUser().getId())
-                .build();
+    @Override
+    public void updateEvent(EventUpdateDTO eventUpdateDTO) {
+        if (eventUpdateDTO.getId() == null) throw new ValidationException("The id field cannot be null.");
+        Event event = eventRepository.findById(eventUpdateDTO.getId()).orElseThrow(
+                () -> new ObjectNotFoundException("Event with id:" + eventUpdateDTO.getId() + " not found.")
+        );
+        Optional.ofNullable(event.getTitle()).ifPresent(event::setTitle);
+        Optional.ofNullable(eventUpdateDTO.getDescription()).ifPresent(event::setDescription);
+        Optional.ofNullable(eventUpdateDTO.getStartDatetime()).ifPresent(event::setStartDatetime);
+        Optional.ofNullable(eventUpdateDTO.getEndDatetime()).ifPresent(event::setEndDatetime);
+        Optional.ofNullable(eventUpdateDTO.getIsActive()).ifPresent(event::setIsActive);
+        Optional.ofNullable(eventUpdateDTO.getTags()).ifPresent(event::setTags);
+        Optional.ofNullable(eventUpdateDTO.getLinkEventSite()).ifPresent(event::setLinkEventSite);
+        Optional.ofNullable(eventUpdateDTO.getLinkImage()).ifPresent(event::setLinkImage);
+        Optional.ofNullable(eventUpdateDTO.getLinkImage()).ifPresent(event::setLinkImage);
+        if (!eventUpdateDTO.getIdEventCategories().isEmpty()) {
+            List<EventCategory> eventCategories = eventUpdateDTO.getIdEventCategories().stream()
+                    .map(id -> eventCategoryRepository.findById(id).orElseThrow(
+                            () -> new ObjectNotFoundException("Category with id:" + id + " not exist.")
+                    )).toList();
+            event.setEventCategories(eventCategories);
+        }
+        if (!eventUpdateDTO.getIdEventPhotos().isEmpty()) {
+            List<EventPhoto> eventPhotos = eventUpdateDTO.getIdEventCategories().stream()
+                    .map(id -> eventPhotoRepository.findById(id).orElseThrow(
+                            () -> new ObjectNotFoundException("Photo with id:" + id + " not exist.")
+                    )).toList();
+            event.setEventPhotos(eventPhotos);
+        }
+        if (!eventUpdateDTO.getIdUsers().isEmpty()) {
+            List<User> userList = eventUpdateDTO.getIdUsers().stream()
+                    .map(id -> userRepository.findById(id).orElseThrow(
+                            () -> new ObjectNotFoundException("User with id:" + id + " not exist.")
+                    )).toList();
+            event.setUsers(userList);
+        }
+        eventRepository.save(event);
     }
 
-    @Override
-    public void updateEvent(EventDTO eventDTO) {
-        Event eventToUpdate = eventRepository.findById(eventDTO.getId()).orElseThrow(() -> new ObjectNotFoundException("Ивент с ид:" + eventDTO.getId() + " не найден"));
-        if (eventDTO.getTitle() != null || !(eventDTO.getTitle().isBlank())) {
-            eventToUpdate.setTitle(eventDTO.getTitle());
+    private void validate(EventCreateDTO eventCreateDTO) {
+        if (eventCreateDTO.getTitle().isBlank()) throw new ValidationException("The title field cannot be empty.");
+        if (eventCreateDTO.getTags().isBlank()) throw new ValidationException("The tage field cannot be empty.");
+        if (eventCreateDTO.getIdEventCategories().isEmpty())
+            throw new ValidationException("Categories must be specified.");
+        if (eventCreateDTO.getIsActive() == null) throw new ValidationException("The active field cannot be empty.");
+        if (eventCreateDTO.getIdUserCreated() == null) throw new ValidationException("The id creator cannot be empty");
+    }
+
+    public List<EventDTO> mapList(List<Event> eventList) {
+        List<EventDTO> eventDTOList = new ArrayList<>();
+        for (Event event : eventList) {
+            EventDTO eventDTO = map(event);
+            eventDTOList.add(eventDTO);
         }
-        if (eventDTO.getDescription() != null) {
-            eventToUpdate.setDescription(eventDTO.getDescription());
-        }
-        if (eventDTO.getLinkImage() != null) {
-            eventToUpdate.setLinkImage(eventDTO.getLinkImage());
-        }
-        if (eventDTO.getPrice() != null) {
-            eventToUpdate.setPrice(eventDTO.getPrice());
-        }
-        if (eventDTO.getTags() != null) {
-            eventToUpdate.setTags(eventDTO.getTags());
-        }
-        eventRepository.save(eventToUpdate);
+        return eventDTOList;
+    }
+
+    private EventDTO map(Event event) {
+        List<EventCategorySimpleDTO> eventCategorySimpleDTOList = event.getEventCategories().stream()
+                .map(eventCategoryMapper::mapCategoryEventToSimpleDTO)
+                .toList();
+        List<EventPhotoDTO> eventPhotoDTOList = event.getEventPhotos().stream()
+                .map(eventPhotoMapper::mapEventPhotoToDTO)
+                .toList();
+        List<UserDTO> userDTOList = event.getUsers().stream()
+                .map(userMapper::mapUserToDTO)
+                .toList();
+        UserDTO userDTO = userMapper.mapUserToDTO(event.getUser());
+        return eventMapper.mapEventToDTO(event, userDTO, eventCategorySimpleDTOList,
+                eventPhotoDTOList, userDTOList);
+    }
+
+    private Event fieldsEvent(EventCreateDTO eventCreateDTO) {
+        Event event = new Event();
+        event.setTitle(event.getTitle());
+        Optional.ofNullable(eventCreateDTO.getDescription()).ifPresent(event::setDescription);
+        Optional.ofNullable(eventCreateDTO.getStartDatetime()).ifPresent(event::setStartDatetime);
+        Optional.ofNullable(eventCreateDTO.getEndDatetime()).ifPresent(event::setEndDatetime);
+        event.setIsActive(eventCreateDTO.getIsActive());
+        User user = userRepository.findById(eventCreateDTO.getIdUserCreated()).orElseThrow(
+                () -> new ObjectNotFoundException("User with id:" + eventCreateDTO.getIdUserCreated() + " not exist.")
+        );
+        event.setUser(user);
+        event.setTags(eventCreateDTO.getTags());
+        List<EventCategory> list = eventCreateDTO.getIdEventCategories().stream()
+                .map(id -> eventCategoryRepository.findById(id).orElseThrow(
+                        () -> new ObjectNotFoundException("Category with id:" + id + " not exist.")
+                )).toList();
+        event.setEventCategories(list);
+        return event;
     }
 }

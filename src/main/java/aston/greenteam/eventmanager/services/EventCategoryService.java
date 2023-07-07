@@ -1,14 +1,14 @@
 package aston.greenteam.eventmanager.services;
 
 import aston.greenteam.eventmanager.dtos.EventCategoryDTO;
-import aston.greenteam.eventmanager.dtos.EventCategoryDTOCreate;
-import aston.greenteam.eventmanager.entities.EventCategory;
+import aston.greenteam.eventmanager.dtos.EventCategoryCreateDTO;
+
 import java.util.List;
 
 public interface EventCategoryService {
     List<EventCategoryDTO> findAll();
     EventCategoryDTO findById(Long id);
-    void addNewCategory(EventCategoryDTOCreate eventCategoryDTOCreate);
+    void addNewCategory(EventCategoryCreateDTO eventCategoryCreateDTO);
     void deleteCategory(Long id);
 
 }

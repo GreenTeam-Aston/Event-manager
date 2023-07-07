@@ -1,16 +1,16 @@
 package aston.greenteam.eventmanager.controllers;
 
 
+import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
+import aston.greenteam.eventmanager.dtos.EventUpdateDTO;
 import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.List;;
 
 @RestController
 @RequestMapping("api/v1/events")
@@ -21,30 +21,23 @@ public class EventController {
     private final EventMapper eventMapper;
 
     @GetMapping
-    public List<EventDTO> getAllEvents(){
-        return eventService.findAll()
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+    public List<EventDTO> getAllEvents() {
+        return eventService.findAll();
     }
 
     @GetMapping("/{id}")
-    public EventDTO getById(@PathVariable Long id){
-        return eventMapper.mapEventToDTO(eventService.findById(id));
+    public EventDTO getById(@PathVariable Long id) {
+        return eventService.findById(id);
     }
 
     @GetMapping("/user-created/{id}")
     public List<EventDTO> getByUserCreatedId(@PathVariable Long id) {
-        return eventService.findAllByUserCreated(id)
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+        return eventService.findAllByUserCreated(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) {
-        eventService.createEvent(eventDTO);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+    public void createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
+        eventService.createEvent(eventCreateDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -54,15 +47,13 @@ public class EventController {
     }
 
     @GetMapping("/tag/{tag}")
-    public List<EventDTO> findAllEventsByTags(@PathVariable String tag) {
-        return eventService.findAllByTag(tag)
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+    public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
+        return eventService.findAllByTag(tag);
     }
+
     @PutMapping
-    public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) {
-        eventService.updateEvent(eventDTO);
+    public ResponseEntity<?> updateEvent(@RequestBody EventUpdateDTO eventUpdateDTO) {
+        eventService.updateEvent(eventUpdateDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -1,7 +1,7 @@
 package aston.greenteam.eventmanager.controllers;
 
 import aston.greenteam.eventmanager.dtos.EventCategoryDTO;
-import aston.greenteam.eventmanager.dtos.EventCategoryDTOCreate;
+import aston.greenteam.eventmanager.dtos.EventCategoryCreateDTO;
 import aston.greenteam.eventmanager.services.EventCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +25,8 @@ public class EventCategoryController {
     }
 
     @PostMapping("/create-events-category")
-    public ResponseEntity<?> createEventCategory(@RequestBody EventCategoryDTOCreate eventCategoryDTOCreate) {
-        eventCategoryService.addNewCategory(eventCategoryDTOCreate);
+    public ResponseEntity<?> createEventCategory(@RequestBody EventCategoryCreateDTO eventCategoryCreateDTO) {
+        eventCategoryService.addNewCategory(eventCategoryCreateDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

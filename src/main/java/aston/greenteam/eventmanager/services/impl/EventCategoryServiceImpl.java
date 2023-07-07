@@ -1,15 +1,15 @@
 package aston.greenteam.eventmanager.services.impl;
 
 import aston.greenteam.eventmanager.dtos.EventCategoryDTO;
-import aston.greenteam.eventmanager.dtos.EventCategoryDTOCreate;
+import aston.greenteam.eventmanager.dtos.EventCategoryCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.EventCategory;
 import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
 import aston.greenteam.eventmanager.mappers.EventCategoryMapper;
-import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.repositories.EventCategoryRepository;
 import aston.greenteam.eventmanager.services.EventCategoryService;
+import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class EventCategoryServiceImpl implements EventCategoryService {
 
     private final EventCategoryRepository eventCategoryRepository;
-    private final EventMapper eventMapper;
+    private final EventService eventService;
     private final EventCategoryMapper eventCategoryMapper;
 
     @Override
@@ -30,9 +30,7 @@ public class EventCategoryServiceImpl implements EventCategoryService {
         System.out.println(all);
         List<EventCategoryDTO> eventCategoryDTOS = new ArrayList<>();
         for (EventCategory eventCategory : all) {
-            List<EventDTO> collect = eventCategory.getEvents().stream()
-                    .map(eventMapper::mapEventToDTO)
-                    .toList();
+            List<EventDTO> collect = eventService.mapList(eventCategory.getEvents());
             EventCategoryDTO eventCategoryDTO = eventCategoryMapper.mapCategoryEventToDTO(eventCategory, collect);
             eventCategoryDTOS.add(eventCategoryDTO);
         }
@@ -42,18 +40,17 @@ public class EventCategoryServiceImpl implements EventCategoryService {
     @Override
     public EventCategoryDTO findById(Long id) {
         EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(
-                () -> new ObjectNotFoundException("Категория ивента с id:" + id + " не найден")
+                () -> new ObjectNotFoundException("Category event with id:" + id + " not found.")
         );
-        List<EventDTO> list = eventCategory.getEvents().stream()
-                .map(eventMapper::mapEventToDTO).toList();
+        List<EventDTO> list = eventService.mapList(eventCategory.getEvents());
         return new EventCategoryDTO(eventCategory.getId(), eventCategory.getTitle(), list);
     }
 
     @Override
-    public void addNewCategory(EventCategoryDTOCreate eventCategoryDTOCreate) {
+    public void addNewCategory(EventCategoryCreateDTO eventCategoryCreateDTO) {
         EventCategory eventCategory = new EventCategory();
         List<Event> events = new ArrayList<>();
-        eventCategory.setTitle(eventCategoryDTOCreate.getTitle());
+        eventCategory.setTitle(eventCategoryCreateDTO.getTitle());
         eventCategory.setEvents(events);
         eventCategoryRepository.save(eventCategory);
     }

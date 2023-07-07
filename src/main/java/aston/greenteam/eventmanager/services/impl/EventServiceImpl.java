@@ -130,7 +130,7 @@ public class EventServiceImpl implements EventService {
         return eventDTOList;
     }
 
-    private EventDTO toDTO(Event event) {
+    public EventDTO toDTO(Event event) {
         List<EventCategorySimpleDTO> eventCategorySimpleDTOList = event.getEventCategories().stream()
                 .map(eventCategoryMapper::mapCategoryEventToSimpleDTO)
                 .toList();

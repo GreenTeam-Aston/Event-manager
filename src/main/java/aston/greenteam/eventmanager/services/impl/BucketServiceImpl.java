@@ -3,8 +3,10 @@ package aston.greenteam.eventmanager.services.impl;
 
 import aston.greenteam.eventmanager.dtos.BucketDTO;
 import aston.greenteam.eventmanager.entities.Bucket;
+import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
 import aston.greenteam.eventmanager.mappers.BucketMapper;
 import aston.greenteam.eventmanager.repositories.BucketRepository;
+import aston.greenteam.eventmanager.repositories.EventRepository;
 import aston.greenteam.eventmanager.services.BucketService;
 import aston.greenteam.eventmanager.services.EventService;
 import aston.greenteam.eventmanager.services.UserService;
@@ -21,6 +23,7 @@ public class BucketServiceImpl implements BucketService {
     private final BucketMapper bucketMapper;
     private final UserService userService;
     private final EventService eventService;
+    private final EventRepository eventRepository;
 
     @Override
     public BucketDTO findById(Long id){
@@ -57,7 +60,9 @@ public class BucketServiceImpl implements BucketService {
         bucket.setName(bucketDTO.getName());
         bucket.setPrice(bucketDTO.getPrice());
         bucket.setUsers(List.of(userService.findById(userId)));
-        bucket.setEvents(List.of(eventService.findById(eventId)));
+        bucket.setEvents(List.of(eventRepository.findById(eventId).orElseThrow(
+                () -> new ObjectNotFoundException("Event with id:" + eventId + " not found.")
+        )));
         bucketRepository.save(bucket);
     }
 

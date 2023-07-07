@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NoticeCategoryMapper {
 
-    private final NoticeMapper noticeMapper;
-
     public NoticeCategoryDTO mapNoticeCategoryToDTO(NoticeCategory noticeCategory) {
         return NoticeCategoryDTO.builder()
                 .id(noticeCategory.getId())

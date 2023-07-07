@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface UserService {
 
-    User saveUser(User user);
+    User findById(Long userId);
+
+    User saveUser(UserDTORegister userDTORegister);
     User findByLogin(String login);
     UserDTORegister findByUserAndPassword(String login, String password);
     boolean existsUserByLogin(String login);
@@ -21,5 +23,4 @@ public interface UserService {
     List<User> findFriendsById(Long userId);
     void addFriends(Long thisUserId, Long anotherUserId);
     void deleteFriends(Long thisUserId, Long anotherUserId);
-
 }

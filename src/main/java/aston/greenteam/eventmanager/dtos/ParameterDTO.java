@@ -20,7 +20,7 @@ public class ParameterDTO {
 
     private String name;
 
-    private Set<Product> products = new HashSet<>();
+    private Set<ProductDTO> products = new HashSet<>();
 
-    private Set<Value> values = new HashSet<>();
+    private Set<ValueDTO> values = new HashSet<>();
 }

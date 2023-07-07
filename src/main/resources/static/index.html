@@ -30,6 +30,7 @@
         <div style="padding-right:10px">
           <a href="#!/register" ng-show="!isUserLoggedIn()">Register</a>
         </div>
+        <!---->
 
         <form class="d-flex" ng-submit="tryToAuth()" ng-show="!isUserLoggedIn()">
           <input class="form-control me-2" type="text" placeholder="Login" ng-model="user.login">

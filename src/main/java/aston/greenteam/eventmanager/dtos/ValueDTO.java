@@ -18,6 +18,6 @@ public class ValueDTO {
 
     private String name;
 
-    private Set <Parameter> parameter;
+    private Set <ParameterDTO> parameter;
 
 }

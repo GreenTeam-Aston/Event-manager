@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/mailing")
 @RequiredArgsConstructor
 public class EmailController {
+
     private final EmailService emailService;
     @PostMapping("/send/{userId}")
     public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO, @PathVariable Long userId){

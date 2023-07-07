@@ -1,20 +1,25 @@
 package aston.greenteam.eventmanager.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BucketDTO {
+public class NoticeDTO {
 
     private Long id;
-    private String name;
-    private BigDecimal price;
+
+    private String message;
+
+    private NoticeCategoryDTO noticeCategory;
+
+    private UserDTO userFrom;
+
+    private UserDTO userTo;
+
+    private EventDTO event;
 }

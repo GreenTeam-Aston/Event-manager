@@ -7,7 +7,7 @@ CREATE TABLE contact_type
 CREATE TABLE contacts
 (
     id              bigserial PRIMARY KEY,
-    value           varchar(30) not null unique,
+    value           varchar(256) not null unique,
     contact_type_id integer     REFERENCES contact_type (id) ON DELETE SET NULL
 );
 

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -24,7 +25,11 @@ public class UserServiceImpl implements UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User saveUser(User user) {
+    public User saveUser(UserDTORegister userDTORegister) {
+        User user = new User();
+        user.setLogin(userDTORegister.getLogin());
+        user.setNickname(userDTORegister.getNickname());
+        user.setPassword(userDTORegister.getPassword());
         UserRole userRole = userRoleRepository.findByUserRole("ROLE_USER");
         user.setUserRole(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -51,6 +56,11 @@ public class UserServiceImpl implements UserService {
         User thisUser = userRepository.findById(thisUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + thisUserId + " не найден."));
         User anotherUser = userRepository.findById(anotherUserId).orElseThrow(() -> new ObjectNotFoundException("Юзер по ид" + anotherUserId + " не найден."));
         deleteUserFriend(thisUser, anotherUser);
+    }
+
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException("No such user with id " + userId));
     }
 
     public void deleteUserFriend(User thisUser, User anotherUser) {

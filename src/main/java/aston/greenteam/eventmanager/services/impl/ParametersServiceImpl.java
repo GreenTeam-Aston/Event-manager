@@ -5,6 +5,7 @@ import aston.greenteam.eventmanager.entities.Parameter;
 import aston.greenteam.eventmanager.entities.Value;
 import aston.greenteam.eventmanager.exceptions.MyEntityNotFoundException;
 import aston.greenteam.eventmanager.mappers.ParameterMapper;
+import aston.greenteam.eventmanager.mappers.ValueMapper;
 import aston.greenteam.eventmanager.repositories.ParametersRepository;
 import aston.greenteam.eventmanager.repositories.ValuesRepository;
 import aston.greenteam.eventmanager.services.ParametersService;
@@ -24,6 +25,8 @@ public class ParametersServiceImpl implements ParametersService {
     private final ValuesRepository valuesRepository;
 
     private final ParameterMapper mapper;
+
+    private final ValueMapper valueMapper; //need for test
 
 
     @Override

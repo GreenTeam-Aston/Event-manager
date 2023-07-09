@@ -18,7 +18,6 @@ public class ProductController {
 
     private final ProductsServiceImpl productsServiceImpl;
 
-    //TODO
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findByValueId(@PathVariable Long id) {
         return new ResponseEntity<>(productsServiceImpl.findById(id), HttpStatus.OK);
@@ -48,7 +47,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}/parameter/{parameterId}")
-    public ProductDTO assignProjectToEmployee(@PathVariable Long productId,
+    public ProductDTO assignParameterToProduct(@PathVariable Long productId,
                                               @PathVariable Long parameterId) {
         return productsServiceImpl.assignParameterToProduct(productId, parameterId);
     }

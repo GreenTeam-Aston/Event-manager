@@ -44,7 +44,7 @@ public class ParameterController {
     }
 
     @PutMapping("/{parameterId}/value/{valueId}")
-    public ParameterDTO assignProjectToEmployee(@PathVariable Long parameterId,
+    public ParameterDTO assignValueToParameter(@PathVariable Long parameterId,
                                                 @PathVariable Long valueId) {
         return parametersServiceImpl.assignValueToParameter(parameterId, valueId);
     }

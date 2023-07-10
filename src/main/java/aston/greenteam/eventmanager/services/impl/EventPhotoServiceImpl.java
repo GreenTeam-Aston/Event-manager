@@ -61,7 +61,7 @@ public class EventPhotoServiceImpl implements EventPhotoService {
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(photoData.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileWasNotSavedException(e);
         }
         return file;
     }

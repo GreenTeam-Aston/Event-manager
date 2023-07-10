@@ -8,74 +8,81 @@ import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
 import aston.greenteam.eventmanager.mappers.NoticeMapper;
 import aston.greenteam.eventmanager.repositories.NoticeRepository;
 import aston.greenteam.eventmanager.services.NoticeService;
-import java.util.List;
+import aston.greenteam.eventmanager.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
 
-  private final NoticeRepository noticeRepository;
+    private final NoticeRepository noticeRepository;
 
-  private final NoticeMapper noticeMapper;
+    private final NoticeMapper noticeMapper;
 
-  @Override
-  public NoticeDTO findById(Long id) {
-    return noticeMapper.mapNoticeToDTO(noticeRepository.getReferenceById(id));
-  }
+    private final UserService userService;
 
-  @Override
-  public List<NoticeDTO> findAll() {
-    return noticeRepository.findAll().stream()
-        .map(noticeMapper::mapNoticeToDTO)
-        .toList();
-  }
-
-  @Override
-  public List<NoticeDTO> findAllForUserTo(Long idUser) {
-    return noticeRepository.findAll().stream()
-        .filter(notice -> notice.getUserTo().getId() == idUser)
-        .map(noticeMapper::mapNoticeToDTO)
-        .toList();
-  }
-
-  @Override
-  public List<NoticeDTO> findAllForUserFrom(Long idUser) {
-    return noticeRepository.findAll().stream()
-        .filter(notice -> notice.getUserFrom().getId() == idUser)
-        .map(noticeMapper::mapNoticeToDTO)
-        .toList();
-  }
-
-  @Override
-  public List<NoticeDTO> findAllByEvent(Long idEvent) {
-    return noticeRepository.findAll().stream()
-        .filter(notice -> notice.getEvent().getId() == idEvent)
-        .map(noticeMapper::mapNoticeToDTO)
-        .toList();
-  }
-
-  @Override
-  public Notice createNotice(NoticeDTO noticeDTO) {
-    NoticeCategory noticeCategory = new NoticeCategory();
-    noticeCategory.setId(noticeDTO.getNoticeCategory().getId());
-    Event event = new Event();
-    event.setId(noticeDTO.getEvent().getId());
-    Notice notice = new Notice();
-    notice.setMessage(noticeDTO.getMessage());
-    notice.setNoticeCategory(noticeCategory);
-    notice.setUserFrom(noticeDTO.getUserFrom());
-    notice.setUserTo(noticeDTO.getUserTo());
-    notice.setEvent(event);
-    return noticeRepository.save(notice);
-  }
-
-  @Override
-  public void delete(Long id) {
-    if(!noticeRepository.existsById(id)){
-      throw new ObjectNotFoundException("Уведомление по ид: " + id + " не найдено.");
+    @Override
+    public NoticeDTO findById(Long id) {
+        return noticeMapper.mapNoticeToDTO(noticeRepository.getReferenceById(id));
     }
-    noticeRepository.deleteById(id);
-  }
+
+    @Override
+    public List<NoticeDTO> findAll() {
+        return noticeRepository.findAll().stream()
+                .map(noticeMapper::mapNoticeToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<NoticeDTO> findAllForUserTo(Long idUser) {
+        return noticeRepository.findAll().stream()
+                .filter(notice -> notice.getUserTo().getId() == idUser)
+                .map(noticeMapper::mapNoticeToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<NoticeDTO> findAllForUserFrom(Long idUser) {
+        return noticeRepository.findAll().stream()
+                .filter(notice -> notice.getUserFrom().getId() == idUser)
+                .map(noticeMapper::mapNoticeToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<NoticeDTO> findAllByEvent(Long idEvent) {
+        return noticeRepository.findAll().stream()
+                .filter(notice -> notice.getEvent().getId() == idEvent)
+                .map(noticeMapper::mapNoticeToDTO)
+                .toList();
+    }
+
+    @Override
+    public Notice createNotice(NoticeDTO noticeDTO) {
+        NoticeCategory noticeCategory = new NoticeCategory();
+        noticeCategory.setId(noticeDTO.getNoticeCategory().getId());
+        Event event = new Event();
+        event.setId(noticeDTO.getEvent().getId());
+        Notice notice = new Notice();
+        notice.setMessage(noticeDTO.getMessage());
+        notice.setNoticeCategory(noticeCategory);
+        notice.setUserFrom(userService.findById(noticeDTO.getUserFrom().getId()));
+        notice.setUserTo(userService.findById(noticeDTO.getUserTo().getId()));
+        notice.setEvent(event);
+
+        //TODO Слава, здесь нужно прикрутить отправку !!!!
+
+        return noticeRepository.save(notice);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if(!noticeRepository.existsById(id)){
+            throw new ObjectNotFoundException("Уведомление по ид: " + id + " не найдено.");
+        }
+        noticeRepository.deleteById(id);
+    }
 }

@@ -9,14 +9,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NoticeCategoryMapper {
 
-  private final NoticeMapper noticeMapper;
-
-  public NoticeCategoryDTO mapNoticeCategoryToDTO(NoticeCategory noticeCategory) {
-    return NoticeCategoryDTO.builder()
-        .id(noticeCategory.getId())
-        .title(noticeCategory.getTitle())
-        .allNotices(noticeCategory.getAllNotices().stream().
-            map(noticeMapper::mapNoticeToDTO).toList())
-        .build();
-  }
+    public NoticeCategoryDTO mapNoticeCategoryToDTO(NoticeCategory noticeCategory) {
+        return NoticeCategoryDTO.builder()
+                .id(noticeCategory.getId())
+                .title(noticeCategory.getTitle())
+                .build();
+    }
 }

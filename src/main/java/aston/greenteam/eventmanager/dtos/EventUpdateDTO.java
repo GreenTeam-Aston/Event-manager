@@ -1,12 +1,9 @@
 package aston.greenteam.eventmanager.dtos;
 
-import aston.greenteam.eventmanager.entities.EventPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EventDTO {
+public class EventUpdateDTO {
 
     private Long id;
     private String title;
@@ -22,12 +19,11 @@ public class EventDTO {
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
     private Boolean isActive;
-    private UserSimpleDTO userCreated;
     private String tags;
     private String linkEventSite;
     private String linkImage;
-    private BigDecimal price;
-    private List<EventCategorySimpleDTO> eventCategories;
-    private List<EventPhotoDTO> eventPhotos;
-    private List<UserSimpleDTO> users;
+    private List<Long> idEventCategories;
+    private List<Long> idEventPhotos;
+    private List<Long> idUsers;
+
 }

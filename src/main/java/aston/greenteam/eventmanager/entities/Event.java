@@ -1,6 +1,7 @@
 package aston.greenteam.eventmanager.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,6 +23,7 @@ public class Event {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "title")
     private String title;
 
@@ -58,6 +60,7 @@ public class Event {
     @JoinColumn(name = "id_user_created")
     private User user;
 
+    @NotNull
     @Column(name = "tags")
     private String tags; // TODO уточнить что это
     // теги для быстрого поиска

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("product/parameter/value")
+@RequestMapping("/api/v1/product/parameter/value")
 @AllArgsConstructor
 public class ValueController {
 

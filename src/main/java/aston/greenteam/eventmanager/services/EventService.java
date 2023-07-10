@@ -1,20 +1,26 @@
 package aston.greenteam.eventmanager.services;
 
 
+import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
+import aston.greenteam.eventmanager.dtos.EventUpdateDTO;
 import aston.greenteam.eventmanager.entities.Event;
 
 import java.util.List;
 
 public interface EventService {
 
-    void createEvent(EventDTO eventDTO);
+    void createEvent(EventCreateDTO eventCreateDTO);
     void deleteEventById(Long id);
-    Event findById(Long id);
-    List<Event> findAll();
-    List<Event> findAllByUserCreated(Long idUserCreated);
+    EventDTO findById(Long id);
+    List<EventDTO> findAll();
+    List<EventDTO> findAllByUserCreated(Long idUserCreated);
 
-    List<Event> findAllByTag(String tag);
+    List<EventDTO> findAllByTag(String tag);
 
-    void updateEvent(EventDTO eventDTO);
+    void updateEvent(EventUpdateDTO eventUpdateDTO, Long id);
+
+    List<EventDTO> toListDTO(List<Event> eventList);
+
+    EventDTO toDTO(Event event);
 }

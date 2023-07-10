@@ -1,70 +1,59 @@
 package aston.greenteam.eventmanager.controllers;
 
 
+import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
-import aston.greenteam.eventmanager.mappers.EventMapper;
+import aston.greenteam.eventmanager.dtos.EventUpdateDTO;
 import aston.greenteam.eventmanager.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.List;;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("api/v1/events")
 @RequiredArgsConstructor
 public class EventController {
 
     private final EventService eventService;
-    private final EventMapper eventMapper;
 
-    @GetMapping("/get-all")
-    public List<EventDTO> getAllEvents(){
-        return eventService.findAll()
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+    @GetMapping
+    public List<EventDTO> getAllEvents() {
+        return eventService.findAll();
     }
 
-    @GetMapping("/get-by-id/{id}")
-    public EventDTO getById(@PathVariable Long id){
-        return eventMapper.mapEventToDTO(eventService.findById(id));
+    @GetMapping("/{id}")
+    public EventDTO getById(@PathVariable Long id) {
+        return eventService.findById(id);
     }
 
-    @GetMapping("/get-all-events/{id}")
+    @GetMapping("/user-created/{id}")
     public List<EventDTO> getByUserCreatedId(@PathVariable Long id) {
-        return eventService.findAllByUserCreated(id)
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+        return eventService.findAllByUserCreated(id);
     }
 
-    //todo добавить обработку различных результатов
-    @PostMapping("/create-event")
-    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) {
-        eventService.createEvent(eventDTO);
+    @PostMapping()
+    public ResponseEntity<?> createEvent(@RequestBody EventCreateDTO eventCreateDTO) {
+        eventService.createEvent(eventCreateDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    //todo добавить обработку различных результатов
-    @DeleteMapping("/remove-event/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> removeEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/get-all/{tag}") // TODO Протестить
+    @GetMapping("/tag/{tag}")
     public List<EventDTO> findAllEventsByTags(@PathVariable(required = true) String tag) {
-        return eventService.findAllByTag(tag)
-                .stream()
-                .map(eventMapper::mapEventToDTO)
-                .collect(Collectors.toList());
+        return eventService.findAllByTag(tag);
     }
-    @PutMapping("/update-event")
-    public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) {
-        eventService.updateEvent(eventDTO);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDTO eventUpdateDTO) {
+        eventService.updateEvent(eventUpdateDTO, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -78,4 +79,17 @@ public class User {
             inverseJoinColumns =@JoinColumn(name = "id_friend")
     )
     private List<User> friends;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(login, user.login) && Objects.equals(nickname, user.nickname) && Objects.equals(age, user.age) && Objects.equals(gender, user.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, nickname, age, gender);
+    }
 }

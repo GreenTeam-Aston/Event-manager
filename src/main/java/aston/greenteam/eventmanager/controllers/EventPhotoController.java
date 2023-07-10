@@ -1,7 +1,6 @@
 package aston.greenteam.eventmanager.controllers;
 
 import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
-import aston.greenteam.eventmanager.mappers.ResponseEntityMapper;
 import aston.greenteam.eventmanager.services.EventPhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;

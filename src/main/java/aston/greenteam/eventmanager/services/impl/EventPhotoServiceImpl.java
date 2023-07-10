@@ -4,6 +4,7 @@ import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.EventPhoto;
 import aston.greenteam.eventmanager.exceptions.EventNotFoundException;
+import aston.greenteam.eventmanager.exceptions.FileWasNotSavedException;
 import aston.greenteam.eventmanager.exceptions.PhotoNotFoundException;
 import aston.greenteam.eventmanager.mappers.PhotoMapper;
 import aston.greenteam.eventmanager.repositories.EventPhotoRepository;
@@ -29,14 +30,14 @@ public class EventPhotoServiceImpl implements EventPhotoService {
     private final String PATH = "src/main/resources/photos/"; // ДЛЯ ДЕМОНСТРАЦИИ
 
     @Override
-    public FileSystemResource getPhoto(long photoId) {
+    public FileSystemResource getPhoto(Long photoId) {
         EventPhoto photo = photoRepository.findById(photoId)
                 .orElseThrow(PhotoNotFoundException::new);
         return new FileSystemResource(photo.getPhotoUri());
     }
 
     @Override
-    public EventPhotoPostDto addEventPhoto(long eventId, MultipartFile photoData) {
+    public EventPhotoPostDto addEventPhoto(Long eventId, MultipartFile photoData) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(EventNotFoundException::new);
         File file = writeFile(photoData);
@@ -46,7 +47,7 @@ public class EventPhotoServiceImpl implements EventPhotoService {
     }
 
     @Override
-    public void deletePhoto(long photoId) {
+    public void deletePhoto(Long photoId) {
         photoRepository.deleteById(photoId);
     }
 
@@ -55,7 +56,7 @@ public class EventPhotoServiceImpl implements EventPhotoService {
         try {
             file = Files.createFile(Paths.get(PATH + photoData.getOriginalFilename())).toFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileWasNotSavedException(e);
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(photoData.getBytes());

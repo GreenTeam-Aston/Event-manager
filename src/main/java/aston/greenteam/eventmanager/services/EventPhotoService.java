@@ -9,10 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface EventPhotoService {
-    FileSystemResource getPhoto(long photoId);
+    FileSystemResource getPhoto(Long photoId);
 
-    EventPhotoPostDto addEventPhoto(long eventId, MultipartFile file);
+    EventPhotoPostDto addEventPhoto(Long eventId, MultipartFile file);
 
-    void deletePhoto(long photoId);
+    void deletePhoto(Long photoId);
 
 }

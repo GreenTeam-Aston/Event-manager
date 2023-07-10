@@ -22,18 +22,4 @@ public class PhotoMapper {
                 .build();
     }
 
-    public static List<EventPhoto> toEventPhotoList(Event event, List<MultipartFile> photoFile) {
-        return photoFile
-                .stream()
-                .map(file -> PhotoMapper.toEventPhoto(event, file.getName()))
-                .toList();
-    }
-
-    public static List<EventPhotoPostDto> toEventPhotoPostDto(List<EventPhoto> photos) {
-        return photos
-                .stream()
-                .map(PhotoMapper::toPostDto)
-                .toList();
-
-    }
 }

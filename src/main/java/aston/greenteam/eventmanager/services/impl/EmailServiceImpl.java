@@ -1,6 +1,7 @@
 package aston.greenteam.eventmanager.services.impl;
 
 import aston.greenteam.eventmanager.dtos.MessageDTO;
+import aston.greenteam.eventmanager.dtos.WeatherDTO;
 import aston.greenteam.eventmanager.services.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,11 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendMessage(MessageDTO messageDTO, Long userId) {
+
+    }
+
+    @Override
+    public void sendMessage(WeatherDTO weatherDTO, Long userId) {
 
     }
 

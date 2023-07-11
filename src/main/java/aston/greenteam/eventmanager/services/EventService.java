@@ -18,7 +18,7 @@ public interface EventService {
 
     List<EventDTO> findAllByTag(String tag);
 
-    void updateEvent(EventUpdateDTO eventUpdateDTO, Long id);
+    EventDTO updateEvent(EventUpdateDTO eventUpdateDTO, Long id);
 
     List<EventDTO> toListDTO(List<Event> eventList);
 

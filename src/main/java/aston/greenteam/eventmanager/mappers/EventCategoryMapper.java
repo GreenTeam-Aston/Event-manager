@@ -2,7 +2,6 @@ package aston.greenteam.eventmanager.mappers;
 
 import aston.greenteam.eventmanager.dtos.EventCategoryDTO;
 import aston.greenteam.eventmanager.dtos.EventCategorySimpleDTO;
-import aston.greenteam.eventmanager.dtos.EventCreateDTO;
 import aston.greenteam.eventmanager.dtos.EventDTO;
 import aston.greenteam.eventmanager.entities.EventCategory;
 import org.springframework.stereotype.Component;

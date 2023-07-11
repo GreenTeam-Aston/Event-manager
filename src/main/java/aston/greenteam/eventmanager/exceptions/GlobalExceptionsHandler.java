@@ -20,5 +20,4 @@ public class GlobalExceptionsHandler {
         AppError apiError = new AppError("entity not found ex", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
-
 }

@@ -1,6 +1,5 @@
 package aston.greenteam.eventmanager.dtos;
 
-import aston.greenteam.eventmanager.entities.EventPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

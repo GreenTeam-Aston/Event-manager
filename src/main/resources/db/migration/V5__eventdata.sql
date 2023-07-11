@@ -1,7 +1,7 @@
-INSERT INTO events(title, description, id_user_created)
-VALUES ('вечеринка', 'вечеринка в честь дня рождения друга', 2),
-       ('пикник', 'закупаемся и едем за город', 3),
-       ('игра в футбол', 'товарищеский матч между отделами на работе', 1);
+INSERT INTO events(title, description, id_user_created, link_event_site)
+VALUES ('вечеринка', 'вечеринка в честь дня рождения друга', 2, 'Санкт-Петербург_улица_Возрождения_20A'),
+       ('пикник', 'закупаемся и едем за город', 3, 'Санкт-Петербуг_аллея_Поликарпова_10к1'),
+       ('игра в футбол', 'товарищеский матч между отделами на работе', 1, 'Санкт-Петербург_улица_Садовая_10');
 
 INSERT INTO categories_for_events(title)
 VALUES ('праздник'),
@@ -14,3 +14,12 @@ VALUES (1, 1),
        (2, 3),
        (3, 3),
        (3, 1);
+
+INSERT INTO roles(title)
+VALUES ('participant'),
+       ('owner');
+
+INSERT INTO user_events(id_event, id_user, id_role)
+VALUES (1, 1, 1),
+       (1, 2, 2),
+       (1, 3, 1);

@@ -14,6 +14,8 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String value;
+
     @ManyToOne
     @JoinColumn(name = "contact_type_id")
     private ContactType contactType;

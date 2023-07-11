@@ -1,12 +1,19 @@
 package aston.greenteam.eventmanager.services.impl;
 
+import aston.greenteam.eventmanager.dtos.ContactDTO;
+import aston.greenteam.eventmanager.dtos.NoticeCreateDTO;
 import aston.greenteam.eventmanager.dtos.NoticeDTO;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.Notice;
 import aston.greenteam.eventmanager.entities.NoticeCategory;
+import aston.greenteam.eventmanager.entities.User;
 import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
+import aston.greenteam.eventmanager.mappers.ContactMapper;
 import aston.greenteam.eventmanager.mappers.NoticeMapper;
+import aston.greenteam.eventmanager.repositories.EventRepository;
+import aston.greenteam.eventmanager.repositories.NoticeCategoryRepository;
 import aston.greenteam.eventmanager.repositories.NoticeRepository;
+import aston.greenteam.eventmanager.services.EmailService;
 import aston.greenteam.eventmanager.services.NoticeService;
 import aston.greenteam.eventmanager.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +27,17 @@ public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
 
+    private final EventRepository eventRepository;
+
+    private final NoticeCategoryRepository noticeCategoryRepository;
+
     private final NoticeMapper noticeMapper;
 
     private final UserService userService;
+
+    private final EmailService emailService;
+
+    private final ContactMapper contactMapper;
 
     @Override
     public NoticeDTO findById(Long id) {
@@ -61,28 +76,38 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Notice createNotice(NoticeDTO noticeDTO) {
-        NoticeCategory noticeCategory = new NoticeCategory();
-        noticeCategory.setId(noticeDTO.getNoticeCategory().getId());
-        Event event = new Event();
-        event.setId(noticeDTO.getEvent().getId());
-        Notice notice = new Notice();
-        notice.setMessage(noticeDTO.getMessage());
-        notice.setNoticeCategory(noticeCategory);
-        notice.setUserFrom(userService.findById(noticeDTO.getUserFrom().getId()));
-        notice.setUserTo(userService.findById(noticeDTO.getUserTo().getId()));
-        notice.setEvent(event);
-
-        //TODO Слава, здесь нужно прикрутить отправку !!!!
-
-        return noticeRepository.save(notice);
+    public NoticeDTO createNotice(NoticeCreateDTO noticeCreateDTO) {
+        Notice notice = fieldsNotice(noticeCreateDTO);
+        ContactDTO contactDTO = contactMapper.mapContactToDTO(notice.getUserTo().getContact());
+        NoticeDTO noticeDTO = noticeMapper.mapNoticeToDTO(notice);
+        emailService.sendNotice(noticeDTO.getEvent(), contactDTO, noticeDTO.getMessage());
+        noticeRepository.save(notice);
+        return noticeDTO;
     }
 
     @Override
     public void delete(Long id) {
-        if(!noticeRepository.existsById(id)){
+        if (!noticeRepository.existsById(id)) {
             throw new ObjectNotFoundException("Уведомление по ид: " + id + " не найдено.");
         }
         noticeRepository.deleteById(id);
+    }
+
+    private Notice fieldsNotice(NoticeCreateDTO noticeCreateDTO) {
+        NoticeCategory noticeCategory = noticeCategoryRepository
+                .findById(noticeCreateDTO.getNoticeCategoryId())
+                .orElseThrow(() -> new ObjectNotFoundException("Not found notice category with id: " +
+                        noticeCreateDTO.getNoticeCategoryId()));
+        User userTo = userService.findById(noticeCreateDTO.getUserToId());
+        User userFrom = userService.findById(noticeCreateDTO.getUserFromId());
+        Event event = eventRepository.findById(noticeCreateDTO.getEventId()).orElseThrow(
+                () -> new ObjectNotFoundException("Event with id:" + noticeCreateDTO.getEventId() + " not found."));
+        Notice notice = new Notice();
+        notice.setMessage(noticeCreateDTO.getMsg());
+        notice.setNoticeCategory(noticeCategory);
+        notice.setUserTo(userTo);
+        notice.setUserFrom(userFrom);
+        notice.setEvent(event);
+        return notice;
     }
 }

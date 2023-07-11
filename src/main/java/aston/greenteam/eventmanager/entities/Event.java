@@ -66,8 +66,8 @@ public class Event {
     // теги для быстрого поиска
 
 
-//    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-//    private List<Notice> notices;
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+    private List<Notice> notices;
 
     @ManyToMany
     @JoinTable(name = "events_categories",

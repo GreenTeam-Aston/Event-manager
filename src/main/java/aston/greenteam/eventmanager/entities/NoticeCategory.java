@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "notice_category")
+@Table(name = "notice_categories")
 @Data
 @NoArgsConstructor
 public class NoticeCategory {
@@ -19,5 +19,5 @@ public class NoticeCategory {
     private String title;
 
     @OneToMany(mappedBy = "noticeCategory")
-    private List<Notice> allNotices; //
+    private List<Notice> allNotices;
 }

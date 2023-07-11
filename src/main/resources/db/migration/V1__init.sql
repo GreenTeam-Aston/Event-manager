@@ -160,8 +160,8 @@ CREATE TABLE notices
     created_at         timestamp default current_timestamp,
     updated_at         timestamp,
     category_notice_id integer REFERENCES notice_categories (id) ON DELETE SET NULL,
-    user_from_id       integer REFERENCES notice_categories (id) ON DELETE SET NULL,
-    user_to_id         integer REFERENCES notice_categories (id) ON DELETE SET NULL,
-    event_id           integer REFERENCES notice_categories (id) ON DELETE SET NULL
+    user_from_id       integer REFERENCES users (id) ON DELETE SET NULL,
+    user_to_id         integer REFERENCES users (id) ON DELETE SET NULL,
+    event_id           integer REFERENCES events (id) ON DELETE SET NULL
 );
 

@@ -17,9 +17,9 @@ public class NoticeDTO {
 
     private NoticeCategoryDTO noticeCategory;
 
-    private UserDTO userFrom;
+    private UserSimpleDTO userFrom;
 
-    private UserDTO userTo;
+    private UserSimpleDTO userTo;
 
     private EventDTO event;
 }

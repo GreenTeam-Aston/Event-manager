@@ -55,6 +55,8 @@ public class UserServiceTest {
         when(userRoleRepository.findByUserRole("ROLE_USER")).thenReturn(userRole);
         when(passwordEncoder.encode(userDTORegister.getPassword())).thenReturn("encodePass");
 
+        userService.saveUser(userDTORegister);
+
         verify(userRoleRepository, times(1)).findByUserRole("ROLE_USER");
         verify(passwordEncoder,times(1)).encode("Password");
 

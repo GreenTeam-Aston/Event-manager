@@ -1,9 +1,7 @@
 package aston.greenteam.eventmanager.services.impl;
 
 import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
-import aston.greenteam.eventmanager.entities.Event;
-import aston.greenteam.eventmanager.entities.EventPhoto;
-import aston.greenteam.eventmanager.entities.User;
+import aston.greenteam.eventmanager.entities.*;
 import aston.greenteam.eventmanager.exceptions.EventNotFoundException;
 import aston.greenteam.eventmanager.exceptions.FileWasNotSavedException;
 import aston.greenteam.eventmanager.repositories.EventPhotoRepository;
@@ -56,8 +54,9 @@ public class EventPhotoServiceImplTest {
     void setUp() {
         LocalDateTime createdAt = LocalDateTime.now().minusDays(2);
         photoAsFile = new FileSystemResource("src/main/resources/photos/Albert_Einstein_Head.jpg");
-        event = new Event(1L, "EventTitle",
-                "EventDescription",
+        event = new Event(1L,
+                "Title",
+                "Description",
                 LocalDateTime.now().minusDays(1),
                 LocalDateTime.now().plusDays(1),
                 "chto",
@@ -68,6 +67,8 @@ public class EventPhotoServiceImplTest {
                 true,
                 new User(),
                 "tag",
+                new ArrayList<>(),
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>());
         eventPhoto = EventPhoto.builder().photoUri(photoUri).event(event).id(1L).build();

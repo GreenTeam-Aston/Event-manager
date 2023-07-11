@@ -40,7 +40,7 @@ public class NoticeCategoryServiceImpl implements NoticeCategoryService {
   @Override
   public void delete(Long id) {
     if(!noticeCategoryRepository.existsById(id)) {
-      throw new ObjectNotFoundException("Категория уведомления по ид: " + id + " не найдено.");
+      throw new ObjectNotFoundException("Notice category with id: " + id + " not found");
     }
     noticeCategoryRepository.deleteById(id);
   }

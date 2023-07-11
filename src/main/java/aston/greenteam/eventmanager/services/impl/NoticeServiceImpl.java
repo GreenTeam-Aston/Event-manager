@@ -81,7 +81,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void delete(Long id) {
         if(!noticeRepository.existsById(id)){
-            throw new ObjectNotFoundException("Уведомление по ид: " + id + " не найдено.");
+            throw new ObjectNotFoundException("Notice with id: " + id + " not found");
         }
         noticeRepository.deleteById(id);
     }

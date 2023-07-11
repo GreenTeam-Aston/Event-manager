@@ -8,6 +8,7 @@ import aston.greenteam.eventmanager.json.Root;
 import aston.greenteam.eventmanager.dtos.MessageDTO;
 import aston.greenteam.eventmanager.dtos.WeatherDTO;
 import aston.greenteam.eventmanager.services.EmailService;
+import aston.greenteam.eventmanager.util.WeatherUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,9 @@ import java.nio.file.Paths;
 public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.sender.email}")
     private String senderAddress;
+    private final WeatherUtil weatherUtil;
     private final JavaMailSender javaMailSender;
+
     public void sendNotice(EventDTO eventDTO, ContactDTO contactDTO, String msg) {
         AddressEventDTO addressEventDTO = new AddressEventDTO(eventDTO.getLinkEventSite());
         String email = contactDTO.getValue();
@@ -41,11 +44,23 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(senderAddress);
             helper.setTo(email);
             helper.setSubject(eventDTO.getTitle());
+
+            WeatherDTO weatherDto = weatherUtil.getWeatherDto(eventDTO.getStartDatetime());
             StringBuilder multiPartMsg = new StringBuilder();
             multiPartMsg.append(msg).append("\n")
+                    .append("Адрес встречи: ")
                     .append(addressEventDTO.getStreetType()).append(" ")
                     .append(addressEventDTO.getStreetName()).append(" ")
-                    .append(addressEventDTO.getHomeNumber());
+                    .append(addressEventDTO.getHomeNumber()).append("\n")
+                    .append("Погода:" + "\n")
+                    .append("Температура: ")
+                    .append(weatherDto.getTemperature()).append('/')
+                    .append("Скорость ветра: ")
+                    .append(weatherDto.getWindSpeed()).append('/')
+                    .append("Влажность: ")
+                    .append(weatherDto.getHumidity()).append('/')
+                    .append("Описание погоды: ")
+                    .append(weatherDto.getDescription());
             helper.setText(multiPartMsg.toString());
             File file = new File(path.toString());
             helper.addAttachment("Meeting place", file);
@@ -53,6 +68,7 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException(e);
         }
         javaMailSender.send(ms);
+    }
 
     @Override
     public void sendMessage(WeatherDTO weatherDTO, Long userId) {
@@ -91,6 +107,5 @@ public class EmailServiceImpl implements EmailService {
         }
         return pathMap;
     }
-
-
 }
+

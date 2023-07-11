@@ -1,11 +1,7 @@
 package aston.greenteam.eventmanager.services.impl;
 
-import aston.greenteam.eventmanager.dtos.ProductDTO;
 import aston.greenteam.eventmanager.dtos.ValueDTO;
-import aston.greenteam.eventmanager.entities.Parameter;
-import aston.greenteam.eventmanager.entities.Product;
 import aston.greenteam.eventmanager.entities.Value;
-import aston.greenteam.eventmanager.exceptions.ErrorCreateEntity;
 import aston.greenteam.eventmanager.exceptions.MyEntityNotFoundException;
 import aston.greenteam.eventmanager.mappers.ValueMapper;
 import aston.greenteam.eventmanager.repositories.ParametersRepository;
@@ -15,10 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-
 
 @Service
 @AllArgsConstructor
@@ -46,10 +39,11 @@ public class ValuesServiceImpl implements ValuesService {
                     return valueDTO;
                 }).collect(Collectors.toList());
     }
-    @Override
-    public ValueDTO createValue(ValueDTO valueDTO){
 
-        Value newValue=new Value();
+    @Override
+    public ValueDTO createValue(ValueDTO valueDTO) {
+
+        Value newValue = new Value();
         newValue.setName(valueDTO.getName());
         valuesRepository.save(newValue);
 
@@ -66,6 +60,4 @@ public class ValuesServiceImpl implements ValuesService {
     public void deleteValue(Long id) {
         valuesRepository.deleteById(id);
     }
-
-
 }

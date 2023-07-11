@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUserFriend(User thisUser, User anotherUser) {
         // Добавил обработку чтобы не было лишнего вызова бд при отсутствии в списке друзей
-        if (!(thisUser.getFriends().contains(anotherUser))) {
+        if ((thisUser.getFriends().contains(anotherUser))) {
             thisUser.getFriends().remove(anotherUser);
             anotherUser.getFriends().remove(thisUser);
             userRepository.save(thisUser);

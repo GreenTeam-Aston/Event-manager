@@ -12,11 +12,14 @@ import aston.greenteam.eventmanager.mappers.EventMapper;
 import aston.greenteam.eventmanager.mappers.EventPhotoMapper;
 import aston.greenteam.eventmanager.mappers.UserMapper;
 import aston.greenteam.eventmanager.repositories.*;
+import aston.greenteam.eventmanager.services.EmailService;
 import aston.greenteam.eventmanager.services.EventService;
+import aston.greenteam.eventmanager.util.WeatherUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,8 @@ public class EventServiceImpl implements EventService {
     private final EventCategoryMapper eventCategoryMapper;
     private final EventPhotoMapper eventPhotoMapper;
     private final UserMapper userMapper;
+    private final EmailService emailService;
+    private final WeatherUtil weatherUtil;
 
     public EventDTO findById(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(
@@ -113,6 +118,17 @@ public class EventServiceImpl implements EventService {
             event.getUsers().addAll(userList);
         }
         eventRepository.save(event);
+    }
+
+    private void updateEventWithUser(Long eventId, Long userId) {
+        Event event = eventRepository.findById(eventId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
+        event.getUsers().add(user);
+        eventRepository.save(event);
+
+        // здесь вызываем отправку рассылки
+        LocalDateTime eventTime = event.getStartDatetime();
+        emailService.sendMessage(weatherUtil.getWeatherDto(eventTime), userId);
     }
 
     private void validate(EventCreateDTO eventCreateDTO) {

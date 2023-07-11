@@ -5,6 +5,8 @@ import aston.greenteam.eventmanager.api.BuildMapYandexRequest;
 import aston.greenteam.eventmanager.dtos.*;
 import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
 import aston.greenteam.eventmanager.json.Root;
+import aston.greenteam.eventmanager.dtos.MessageDTO;
+import aston.greenteam.eventmanager.dtos.WeatherDTO;
 import aston.greenteam.eventmanager.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -28,8 +30,6 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.sender.email}")
     private String senderAddress;
     private final JavaMailSender javaMailSender;
-
-    @Override
     public void sendNotice(EventDTO eventDTO, ContactDTO contactDTO, String msg) {
         AddressEventDTO addressEventDTO = new AddressEventDTO(eventDTO.getLinkEventSite());
         String email = contactDTO.getValue();
@@ -41,7 +41,6 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(senderAddress);
             helper.setTo(email);
             helper.setSubject(eventDTO.getTitle());
-
             StringBuilder multiPartMsg = new StringBuilder();
             multiPartMsg.append(msg).append("\n")
                     .append(addressEventDTO.getStreetType()).append(" ")
@@ -54,6 +53,10 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException(e);
         }
         javaMailSender.send(ms);
+
+    @Override
+    public void sendMessage(WeatherDTO weatherDTO, Long userId) {
+
     }
 
     @Override

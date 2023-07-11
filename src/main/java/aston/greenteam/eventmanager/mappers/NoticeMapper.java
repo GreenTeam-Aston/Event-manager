@@ -3,7 +3,6 @@ package aston.greenteam.eventmanager.mappers;
 import aston.greenteam.eventmanager.dtos.NoticeDTO;
 import aston.greenteam.eventmanager.entities.Notice;
 import aston.greenteam.eventmanager.services.EventService;
-import aston.greenteam.eventmanager.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +13,7 @@ public class NoticeMapper {
     private final NoticeCategoryMapper noticeCategoryMapper;
     private final EventService eventService;
     private final UserMapper userMapper;
+
 
     public NoticeDTO mapNoticeToDTO(Notice notice) {
         return NoticeDTO.builder()

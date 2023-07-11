@@ -1,10 +1,7 @@
 package aston.greenteam.eventmanager.services;
 
-import aston.greenteam.eventmanager.dtos.ParameterDTO;
 import aston.greenteam.eventmanager.dtos.ProductDTO;
-import aston.greenteam.eventmanager.dtos.ValueDTO;
 import aston.greenteam.eventmanager.entities.Product;
-import aston.greenteam.eventmanager.entities.Value;
 
 import java.util.List;
 

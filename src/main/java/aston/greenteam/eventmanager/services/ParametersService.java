@@ -18,5 +18,4 @@ public interface ParametersService {
     void deleteParameter(Long id);
 
     ParameterDTO assignValueToParameter(Long parameterId, Long valueId);
-
 }

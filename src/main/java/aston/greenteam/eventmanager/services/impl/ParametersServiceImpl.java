@@ -79,5 +79,4 @@ public class ParametersServiceImpl implements ParametersService {
 
         return mapper.parameterToParameterDTO(parameter);
     }
-
 }

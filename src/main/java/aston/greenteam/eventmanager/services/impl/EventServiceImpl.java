@@ -80,7 +80,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(EventUpdateDTO eventUpdateDTO, Long id) {
+    public EventDTO updateEvent(EventUpdateDTO eventUpdateDTO, Long id) {
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Event with id:" + id + " not found.")
         );
@@ -118,6 +118,7 @@ public class EventServiceImpl implements EventService {
             event.getUsers().addAll(userList);
         }
         eventRepository.save(event);
+        return toDTO(event);
     }
 
     private void updateEventWithUser(Long eventId, Long userId) {

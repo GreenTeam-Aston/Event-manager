@@ -37,6 +37,4 @@ public class EmailServiceImpl implements EmailService {
         message.setText(msg);
         javaMailSender.send(message);
     }
-
-
 }

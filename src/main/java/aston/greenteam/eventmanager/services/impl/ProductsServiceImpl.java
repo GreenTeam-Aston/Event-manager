@@ -1,17 +1,12 @@
 package aston.greenteam.eventmanager.services.impl;
 
-import aston.greenteam.eventmanager.dtos.ParameterDTO;
 import aston.greenteam.eventmanager.dtos.ProductDTO;
-import aston.greenteam.eventmanager.dtos.ValueDTO;
 import aston.greenteam.eventmanager.entities.Parameter;
 import aston.greenteam.eventmanager.entities.Product;
-import aston.greenteam.eventmanager.entities.Value;
 import aston.greenteam.eventmanager.exceptions.MyEntityNotFoundException;
 import aston.greenteam.eventmanager.mappers.ProductMapper;
-import aston.greenteam.eventmanager.mappers.ValueMapper;
 import aston.greenteam.eventmanager.repositories.ParametersRepository;
 import aston.greenteam.eventmanager.repositories.ProductsRepository;
-import aston.greenteam.eventmanager.repositories.ValuesRepository;
 import aston.greenteam.eventmanager.services.ProductsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -87,5 +82,4 @@ public class ProductsServiceImpl implements ProductsService {
         productsRepository.save(product);
         return mapper.productToProductDTO(product);
     }
-
 }

@@ -1,6 +1,5 @@
 package aston.greenteam.eventmanager.controllers;
 
-import aston.greenteam.eventmanager.dtos.ParameterDTO;
 import aston.greenteam.eventmanager.dtos.ProductDTO;
 import aston.greenteam.eventmanager.entities.Product;
 import aston.greenteam.eventmanager.services.impl.ProductsServiceImpl;
@@ -52,5 +51,4 @@ public class ProductController {
                                               @PathVariable Long parameterId) {
         return productsServiceImpl.assignParameterToProduct(productId, parameterId);
     }
-
 }

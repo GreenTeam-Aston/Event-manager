@@ -50,7 +50,7 @@ class EventControllerTest {
                 .title("title")
                 .description("description")
                 .tags("tags")
-                .build();
+                .build(); //
     }
 
     @SneakyThrows

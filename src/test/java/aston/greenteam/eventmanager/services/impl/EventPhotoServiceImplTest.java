@@ -93,7 +93,6 @@ public class EventPhotoServiceImplTest {
     void addEventPhotoWhenUrlIsWrongShouldThrowException() {
         byte[] array = {0};
         MockMultipartFile mockMultipartFile = new MockMultipartFile("no", array);
-        EventPhotoPostDto dto = EventPhotoPostDto.builder().photoUri(photoUri).id(1L).build();
         when(eventRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(event));
         assertThrows(FileWasNotSavedException.class,

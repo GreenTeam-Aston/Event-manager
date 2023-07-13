@@ -1,8 +1,13 @@
 package aston.greenteam.eventmanager.services;
 
-import aston.greenteam.eventmanager.entities.EventPhoto;
+import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface EventPhotoService {
-    EventPhoto addEventPhoto(EventPhoto eventPhoto);
-    String getEventPhoto(Long id);
+    FileSystemResource getPhoto(Long photoId);
+
+    EventPhotoPostDto addEventPhoto(Long eventId, MultipartFile file);
+
+    void deletePhoto(Long photoId);
 }

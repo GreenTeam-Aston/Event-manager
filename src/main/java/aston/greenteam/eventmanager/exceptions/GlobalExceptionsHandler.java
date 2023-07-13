@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Optional;
+
 @ControllerAdvice
 public class GlobalExceptionsHandler {
 
@@ -20,4 +22,19 @@ public class GlobalExceptionsHandler {
         AppError apiError = new AppError("entity not found ex", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(FileWasNotSavedException.class)
+    public ResponseEntity<ErrorMessage> handleFileNotSavedException(RuntimeException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorMessage(e.getMessage()));
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleEventNotFoundException(RuntimeException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(e.getMessage()));
+    }
+
 }

@@ -12,5 +12,5 @@ public class EventPhotoMapper {
                 .id(eventPhoto.getId())
                 .url(eventPhoto.getPhotoUri())
                 .build();
-    };
+    }
 }

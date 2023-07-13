@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +16,4 @@ public class UserDTO {
     private String nickname;
     private Integer age;
     private String gender;
-    private List<UserFriendDTO> userFriends;
-
 }

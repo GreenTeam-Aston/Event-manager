@@ -38,5 +38,4 @@ public class ProductDTO {
     private List<BucketDTO> buckets;
 
     private Set<ParameterDTO> parameters=new HashSet<>();
-
 }

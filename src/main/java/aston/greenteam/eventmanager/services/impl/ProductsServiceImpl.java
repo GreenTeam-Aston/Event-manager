@@ -46,6 +46,12 @@ public class ProductsServiceImpl implements ProductsService {
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product newProduct = new Product();
         newProduct.setTitle(productDTO.getTitle());
+        newProduct.setDescription(productDTO.getDescription());
+        newProduct.setImage(productDTO.getImage());
+        newProduct.setPrice(productDTO.getPrice());
+        newProduct.setQuantity(productDTO.getQuantity());
+        newProduct.setQuantity(productDTO.getQuantity());
+        newProduct.setCreated_at(productDTO.getCreated_at());
         productsRepository.save(newProduct);
         return mapper.productToProductDTO(newProduct);
     }

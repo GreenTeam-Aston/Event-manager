@@ -3,9 +3,6 @@ package aston.greenteam.eventmanager.mappers;
 import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.EventPhoto;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public class PhotoMapper {
     public static EventPhotoPostDto toPostDto(EventPhoto photo) {
@@ -21,5 +18,4 @@ public class PhotoMapper {
                 .photoUri(photoUri)
                 .build();
     }
-
 }

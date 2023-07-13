@@ -11,5 +11,4 @@ public class BuildCoordinatesYandexRequest {
         return String.format("https://geocode-maps.yandex.ru/1.x/?apikey=109c4104-f8c5-4a6c-aea7-9061fef664ca&geocode=%s,+%s+%s,+дом+%s&format=json",
                 addressEventDTO.getCity(), addressEventDTO.getStreetName(), addressEventDTO.getStreetType(), addressEventDTO.getHomeNumber());
     }
-
 }

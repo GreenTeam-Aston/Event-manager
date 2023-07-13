@@ -1,6 +1,7 @@
 package aston.greenteam.eventmanager.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,5 +37,4 @@ public class GlobalExceptionsHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ErrorMessage(e.getMessage()));
     }
-
 }

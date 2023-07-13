@@ -11,7 +11,6 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class); //for test
 
     ProductDTO productToProductDTO(Product product);
-
 }
 
 

@@ -14,7 +14,6 @@ public class NoticeMapper {
     private final EventService eventService;
     private final UserMapper userMapper;
 
-
     public NoticeDTO mapNoticeToDTO(Notice notice) {
         return NoticeDTO.builder()
                 .id(notice.getId())

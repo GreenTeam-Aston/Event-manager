@@ -20,15 +20,18 @@ public class UserController {
 
     private final UserService userService;
 
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/test")
     public String getTest(){
         return "Hello my sweetest friend!";
     }
 
+    @GetMapping("/{id}")
+    public UserDTO getById(@PathVariable Long id) {
+        return userService.userToDTO(userService.findById(id));
+    }
 
-    @GetMapping("")
+    @GetMapping
     public List<UserDTO> getAllUsers(){
         return userService.findAll()
                 .stream()

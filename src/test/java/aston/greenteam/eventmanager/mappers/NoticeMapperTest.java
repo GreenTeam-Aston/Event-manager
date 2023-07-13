@@ -1,20 +1,18 @@
 package aston.greenteam.eventmanager.mappers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import aston.greenteam.eventmanager.dtos.NoticeDTO;
 import aston.greenteam.eventmanager.entities.Event;
 import aston.greenteam.eventmanager.entities.Notice;
 import aston.greenteam.eventmanager.entities.NoticeCategory;
 import aston.greenteam.eventmanager.entities.User;
-import aston.greenteam.eventmanager.services.EventService;
-import aston.greenteam.eventmanager.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = NoticeMapper.class)
 public class NoticeMapperTest {

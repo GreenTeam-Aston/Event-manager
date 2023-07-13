@@ -10,7 +10,7 @@ public class EventPhotoMapper {
     public EventPhotoDTO mapEventPhotoToDTO(EventPhoto eventPhoto) {
         return EventPhotoDTO.builder()
                 .id(eventPhoto.getId())
-                .url(eventPhoto.getUrl())
+                .url(eventPhoto.getPhotoUri())
                 .build();
     };
 }

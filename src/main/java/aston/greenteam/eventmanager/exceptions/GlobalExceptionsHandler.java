@@ -41,12 +41,10 @@ public class GlobalExceptionsHandler {
 }
 
 
-    class ErrorMessage {
-        private String message;
+class ErrorMessage {
+    private String message;
 
-        public ErrorMessage(String message) {
+    public ErrorMessage(String message) {
             this.message = message;
         }
-    }
-
 }

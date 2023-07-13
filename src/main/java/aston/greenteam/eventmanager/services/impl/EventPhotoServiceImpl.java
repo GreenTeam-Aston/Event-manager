@@ -1,35 +1,21 @@
 package aston.greenteam.eventmanager.services.impl;
 
-import aston.greenteam.eventmanager.dtos.*;
+import aston.greenteam.eventmanager.dtos.EventPhotoPostDto;
 import aston.greenteam.eventmanager.entities.Event;
-import aston.greenteam.eventmanager.entities.EventCategory;
 import aston.greenteam.eventmanager.entities.EventPhoto;
-import aston.greenteam.eventmanager.entities.User;
-import aston.greenteam.eventmanager.exceptions.ObjectNotFoundException;
-import aston.greenteam.eventmanager.exceptions.ValidationException;
-import aston.greenteam.eventmanager.mappers.EventCategoryMapper;
-import aston.greenteam.eventmanager.mappers.EventMapper;
-import aston.greenteam.eventmanager.mappers.EventPhotoMapper;
-import aston.greenteam.eventmanager.mappers.UserMapper;
-import aston.greenteam.eventmanager.repositories.*;
-import aston.greenteam.eventmanager.services.EmailService;
-import aston.greenteam.eventmanager.services.EventService;
-import aston.greenteam.eventmanager.util.WeatherUtil;
-import jakarta.transaction.Transactional;
 import aston.greenteam.eventmanager.exceptions.EventNotFoundException;
 import aston.greenteam.eventmanager.exceptions.FileWasNotSavedException;
 import aston.greenteam.eventmanager.exceptions.PhotoNotFoundException;
+import aston.greenteam.eventmanager.mappers.EventPhotoMapper;
 import aston.greenteam.eventmanager.mappers.PhotoMapper;
 import aston.greenteam.eventmanager.repositories.EventPhotoRepository;
 import aston.greenteam.eventmanager.repositories.EventRepository;
 import aston.greenteam.eventmanager.services.EventPhotoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +27,7 @@ import java.nio.file.Paths;
 public class EventPhotoServiceImpl implements EventPhotoService {
 
     private final EventRepository eventRepository;
-    private final EventPhotoRepository eventPhotoRepository;
+    private final EventPhotoRepository photoRepository;
     private final EventPhotoMapper eventPhotoMapper;
 
     private final String PATH = "src/main/resources/photos/"; // ДЛЯ ДЕМОНСТРАЦИИ
@@ -73,12 +59,12 @@ public class EventPhotoServiceImpl implements EventPhotoService {
         try {
             file = Files.createFile(Paths.get(PATH + photoData.getOriginalFilename())).toFile();
         } catch (IOException e) {
-            throw new FileWasNotSavedException(e);
+            throw new FileWasNotSavedException();
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(photoData.getBytes());
         } catch (IOException e) {
-            throw new FileWasNotSavedException(e);
+            throw new FileWasNotSavedException();
         }
         return file;
     }
